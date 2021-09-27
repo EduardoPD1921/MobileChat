@@ -13,7 +13,8 @@ export const containerStyle = StyleSheet.create({
   },
   formContainer: {
     display: 'flex',
-    width: '70%'
+    width: '70%',
+    justifyContent: 'flex-end'
   },
   formInfoContainer: {
     marginTop: 30,
@@ -30,6 +31,10 @@ export const containerStyle = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  submitContainer: {
+    marginTop: 40,
+    alignItems: 'center',
   }
 });
 
@@ -58,6 +63,22 @@ export const textStyle = StyleSheet.create({
     color: '#696969',
     fontSize: 13,
     fontFamily: 'Poppins-Regular'
+  },
+  submitButtonText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 15,
+    color: 'white'
+  },
+  dividerText: {
+    marginTop: 20,
+    fontFamily: 'Poppins-Regular'
+  },
+  registerText: {
+    marginTop: 10,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    textDecorationLine: 'underline',
+    color: '#52B788'
   }
 });
 
@@ -68,5 +89,13 @@ export const inputStyle = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#74C69D',
     paddingLeft: 50
+  },
+  submitButton: {
+    height: 50,
+    width: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#95D5B2',
+    borderRadius: 16
   }
 });
