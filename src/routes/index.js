@@ -19,6 +19,7 @@ function Routes() {
               headerStyle: { backgroundColor: '#52B788' },
               headerTintColor: 'white',
               headerTitleAlign: 'center',
+              headerTitleStyle: { fontFamily: 'Poppins-Medium' }
             }
           } 
         />
@@ -30,6 +31,7 @@ function Routes() {
               headerStyle: { backgroundColor: '#52B788' },
               headerTintColor: 'white',
               headerTitleAlign: 'center',
+              headerTitleStyle: { fontFamily: 'Poppins-Medium' },
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
             }
           }

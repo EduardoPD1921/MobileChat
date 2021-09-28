@@ -50,7 +50,7 @@ export const inputStyle = StyleSheet.create({
     width: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#95D5B2',
+    backgroundColor: '#52B788',
     borderRadius: 16
   }
 });
@@ -62,7 +62,7 @@ export const textStyle = StyleSheet.create({
     fontFamily: 'Poppins-Regular'
   },
   submitButtonText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Medium',
     fontSize: 15,
     color: 'white'
   },
