@@ -30,7 +30,7 @@ function LoginForm({ navigation }) {
   const { handleChange, handleSubmit, values, errors, touched } = useFormik({
     initialValues: { email: '', password: '' },
     onSubmit: values => console.log(values),
-    // validationSchema: LoginSchema
+    validationSchema: LoginSchema
   });
 
   return (
@@ -74,8 +74,8 @@ function LoginForm({ navigation }) {
             <Text style={textStyle.submitButtonText}>Entrar</Text>
           </TouchableHighlight>
           <Text style={textStyle.dividerText}>ou</Text>
-          <TouchableOpacity onPress={() => console.log('test')}>
-            <Text style={textStyle.registerText} onPress={() => navigation.navigate('Register')}>Registre-se</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={textStyle.registerText}>Registre-se</Text>
           </TouchableOpacity>
         </View>
       </View>
