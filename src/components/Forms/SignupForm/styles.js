@@ -13,7 +13,7 @@ export const containerStyle = StyleSheet.create({
 
 export const inputStyle = StyleSheet.create({
   defaultSignupInput: {
-    marginTop: 30,
+    marginTop: 45,
     borderBottomColor: '#52B788',
     borderBottomWidth: 1,
     paddingLeft: 50
@@ -43,5 +43,12 @@ export const textStyle = StyleSheet.create({
     color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: 17
+  },
+  errorText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 13,
+    position: 'absolute',
+    bottom: -25,
+    color: 'red'
   }
 });
