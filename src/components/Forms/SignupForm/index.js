@@ -34,7 +34,7 @@ function SignupForm() {
       const { userEmail, userName, userPhone, userPassword } = values;
       api.post('/user/store', { userName, userEmail, userPhone, userPassword })
         .then(resp => console.log(resp))
-        .catch(error => console.warn(error));
+        .catch(error => console.warn(error.response.data));
     },
     validationSchema: SignupSchema
   });
