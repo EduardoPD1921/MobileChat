@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View,
   Text,
@@ -6,16 +6,38 @@ import {
   StatusBar, 
   KeyboardAvoidingView
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import LoginForm from '../../components/Forms/LoginForm';
+import Snackbar from '../../components/UI/Snackbar';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { containerStyle, textStyle } from './styles';
 
 function Login({ navigation }) {
+  const [openSnack, setOpenSnack] = useState(false);
+
+  const isFocused = useIsFocused();
+
+  useEffect(async () => {
+    if (isFocused) {
+      const snackbarOpen = await AsyncStorage.getItem('snackbarOpen');
+      if (snackbarOpen) {
+        setOpenSnack(true);
+        AsyncStorage.removeItem('snackbarOpen');
+      }
+    }
+  }, [isFocused]);
+
   return (
     <View style={containerStyle.mainContainer}>
       <StatusBar
         backgroundColor="#52B788"
+      />
+      <Snackbar
+        openSnack={openSnack}
+        setSnackbarStatus={setOpenSnack}
       />
       <KeyboardAvoidingView style={{ flex: 6, width: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
         <View style={containerStyle.titleContainer}>

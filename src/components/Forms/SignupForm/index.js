@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, TextInput, TouchableHighlight, Text } from 'react-native';
 
 import api from '../../../api';
@@ -6,13 +6,15 @@ import api from '../../../api';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Icon from 'react-native-vector-icons/Feather';
 
 import ErrorText from './ErrorText';
 
 import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
 
-function SignupForm() {
+function SignupForm({ navigation }) {
   const SignupSchema = Yup.object().shape({
     userName: Yup.string()
       .required('Insira seu nome.'),
@@ -33,7 +35,11 @@ function SignupForm() {
     onSubmit: values => {
       const { userEmail, userName, userPhone, userPassword } = values;
       api.post('/user/store', { userName, userEmail, userPhone, userPassword })
-        .then(resp => console.log(resp))
+        .then(resp => {
+          AsyncStorage.setItem('snackbarOpen', 'true')
+            .then(() => navigation.navigate('Login'))
+            .catch(error => console.log(error));
+        })
         .catch(error => console.warn(error.response.data));
     },
     validationSchema: SignupSchema
@@ -44,14 +50,6 @@ function SignupForm() {
       .replace(/\D/g, "")
       .replace(/^(\d{2})(\d)/g, "($1) $2")
       .replace(/(\d)(\d{4})$/, "$1-$2");
-  };
-
-  function unmaskPhone(maskedValue) {
-    return maskedValue
-      .replace('(', '')
-      .replace(')', '')
-      .replace('-', '')
-      .replace(' ', '');
   };
 
   function inputStyleHandler(touched, error) {
