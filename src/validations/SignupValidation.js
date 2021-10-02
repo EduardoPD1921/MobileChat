@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import api from '../api';
 
-Yup.addMethod(Yup.string().email, 'uniqueEmail', function() {
+Yup.addMethod(Yup.string, 'uniqueEmail', function() {
   return this.test({
     name: 'checkUniqueEmail',
     message: 'E-mail já cadastrado.',

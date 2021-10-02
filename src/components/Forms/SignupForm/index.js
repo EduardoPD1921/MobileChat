@@ -27,7 +27,7 @@ function SignupForm({ navigation }) {
         console.log(error.response.data);
       }
     },
-    validationSchema: SignupSchema,
+    validationSchema: SignupSchema
   });
 
   function maskPhone(rawValue) {
