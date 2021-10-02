@@ -4,7 +4,7 @@ import { View, TextInput, TouchableHighlight, Text } from 'react-native';
 import api from '../../../api';
 
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import SignupSchema from '../../../validations/SignupValidation';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,34 +15,19 @@ import ErrorText from './ErrorText';
 import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
 
 function SignupForm({ navigation }) {
-  const SignupSchema = Yup.object().shape({
-    userName: Yup.string()
-      .required('Insira seu nome.'),
-    userEmail: Yup.string()
-      .email('E-mail inválido.')
-      .required('Insira um e-mail.'),
-    userPhone: Yup.string()
-      .min(15, 'Número inválido.')
-      .max(15, 'Número inválido.')
-      .required('Insira um número.'),
-    userPassword: Yup.string()
-      .min(8, 'Senha muito curta.')
-      .required('Insira uma senha.')
-  });
-
   const { handleChange, handleSubmit, values, errors, touched } = useFormik({
     initialValues: { userName: '', userEmail: '', userPhone: '', userPassword: '' },
-    onSubmit: values => {
+    onSubmit: async values => {
       const { userEmail, userName, userPhone, userPassword } = values;
-      api.post('/user/store', { userName, userEmail, userPhone, userPassword })
-        .then(resp => {
-          AsyncStorage.setItem('snackbarOpen', 'true')
-            .then(() => navigation.navigate('Login'))
-            .catch(error => console.log(error));
-        })
-        .catch(error => console.warn(error.response.data));
+      try {
+        const requestResp = await api.post('/user/store', { userName, userEmail, userPhone, userPassword });
+        await AsyncStorage.setItem('snackbarOpen', 'true');
+        navigation.navigate('Login');
+      } catch(error) {
+        console.log(error.response.data);
+      }
     },
-    validationSchema: SignupSchema
+    validationSchema: SignupSchema,
   });
 
   function maskPhone(rawValue) {
