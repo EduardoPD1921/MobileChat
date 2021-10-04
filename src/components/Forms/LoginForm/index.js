@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 
+import { AuthContext } from '../../../contexts/AuthContext';
+
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import LoginSchema from '../../../validations/LoginValidation';
 
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -18,14 +20,7 @@ import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
 function LoginForm({ navigation }) {
   const [rememberMe, setRememberMe] = useState(false);
 
-  const LoginSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('E-mail inválido.')
-      .required('Insira seu e-mail.'),
-    password: Yup.string()
-      .min(8)
-      .required('Insira sua senha.')
-  });
+  const { handleAuth } = useContext(AuthContext);
 
   const { handleChange, handleSubmit, values, errors, touched } = useFormik({
     initialValues: { email: '', password: '' },
@@ -39,6 +34,7 @@ function LoginForm({ navigation }) {
         <View style={containerStyle.inputContainer}>
           <Icon name="user" size={20} style={imageStyle.inputIcon} />
           <TextInput
+            placeholderTextColor="#9f9f9f"
             style={inputStyle.defaultLoginInput}
             placeholder="E-mail"
             onChangeText={handleChange('email')} 
@@ -47,6 +43,7 @@ function LoginForm({ navigation }) {
         <View style={containerStyle.inputContainer}>
           <Icon name="lock" size={20} style={imageStyle.inputIcon} />
           <TextInput
+            placeholderTextColor="#9f9f9f"
             style={inputStyle.defaultLoginInput}
             secureTextEntry
             placeholder="Senha"
@@ -70,7 +67,7 @@ function LoginForm({ navigation }) {
       </View>
       <View>
         <View style={containerStyle.submitContainer}>
-          <TouchableHighlight underlayColor="#40916C" onPress={handleSubmit} style={inputStyle.submitButton}>
+          <TouchableHighlight underlayColor="#40916C" onPress={handleAuth} style={inputStyle.submitButton}>
             <Text style={textStyle.submitButtonText}>Entrar</Text>
           </TouchableHighlight>
           <Text style={textStyle.dividerText}>ou</Text>

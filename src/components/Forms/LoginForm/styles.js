@@ -43,7 +43,8 @@ export const inputStyle = StyleSheet.create({
     width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: '#74C69D',
-    paddingLeft: 50
+    paddingLeft: 50,
+    color: 'black'
   },
   submitButton: {
     height: 50,

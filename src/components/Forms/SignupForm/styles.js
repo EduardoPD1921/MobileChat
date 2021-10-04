@@ -16,7 +16,8 @@ export const inputStyle = StyleSheet.create({
     marginTop: 45,
     borderBottomColor: '#52B788',
     borderBottomWidth: 1,
-    paddingLeft: 50
+    paddingLeft: 50,
+    color: 'black'
   },
   submitSignupForm: {
     width: '70%',

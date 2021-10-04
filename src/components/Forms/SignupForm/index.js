@@ -64,6 +64,7 @@ function SignupForm({ navigation }) {
           size={20} 
         />
         <TextInput
+          placeholderTextColor="#9f9f9f"
           style={inputStyleHandler(touched.userName, errors.userName)}
           placeholder="Nome" 
           onChangeText={handleChange('userName')}
@@ -81,6 +82,7 @@ function SignupForm({ navigation }) {
           size={20} 
         />
         <TextInput
+          placeholderTextColor="#9f9f9f"
           style={inputStyleHandler(touched.userEmail, errors.userEmail)}
           placeholder="E-mail" 
           onChangeText={handleChange('userEmail')}
@@ -98,6 +100,7 @@ function SignupForm({ navigation }) {
           size={20} 
         />
         <TextInput
+          placeholderTextColor="#9f9f9f"
           style={inputStyleHandler(touched.userPhone, errors.userPhone)}
           placeholder="Telefone"
           onChangeText={handleChange('userPhone')}
@@ -117,6 +120,7 @@ function SignupForm({ navigation }) {
           size={20} 
         />
         <TextInput
+          placeholderTextColor="#9f9f9f"
           style={inputStyleHandler(touched.userPassword, errors.userPassword)}
           placeholder="Senha" 
           secureTextEntry
