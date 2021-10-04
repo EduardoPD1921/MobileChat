@@ -7,7 +7,7 @@ Yup.addMethod(Yup.string, 'uniqueEmail', function() {
     message: 'E-mail já cadastrado.',
     test: function(value) {
       return new Promise((resolve, reject) => {
-        api.get(`/user/checkUniqueEmail/${value}`)
+        api.get(`/user/checkEmailExists/${value}`)
           .then(resp => {
             if (resp.data) {
               resolve(false);

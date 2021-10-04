@@ -24,7 +24,7 @@ function SignupForm({ navigation }) {
         await AsyncStorage.setItem('snackbarOpen', 'true');
         navigation.navigate('Login');
       } catch(error) {
-        console.log(error.response.data);
+        console.warn(error.response.data);
       }
     },
     validationSchema: SignupSchema

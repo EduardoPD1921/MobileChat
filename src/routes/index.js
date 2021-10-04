@@ -16,6 +16,7 @@ function Routes() {
           component={Login}
           options={
             {
+              headerTitle: 'Entrar',
               headerStyle: { backgroundColor: '#52B788' },
               headerTintColor: 'white',
               headerTitleAlign: 'center',
@@ -28,6 +29,7 @@ function Routes() {
           component={Signup}
           options={
             {
+              headerTitle: 'Cadastro',
               headerStyle: { backgroundColor: '#52B788' },
               headerTintColor: 'white',
               headerTitleAlign: 'center',
