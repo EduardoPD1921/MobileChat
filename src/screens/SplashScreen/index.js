@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
+
+import { containerStyle, textStyle } from './styles';
 
 function SplashScreen() {
   return (
-    <View>
-      <Text>SplashScreen</Text>
+    <View style={containerStyle.mainContainer}>
+      <StatusBar
+        backgroundColor="#52B788" 
+      />
+      <Text style={textStyle.title}>MobileChat</Text>
     </View>
   );
 };

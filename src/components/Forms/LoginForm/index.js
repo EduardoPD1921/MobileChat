@@ -4,7 +4,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
+  ActivityIndicator
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import api from '../../../api';
@@ -19,24 +20,26 @@ import ErrorText from '../SignupForm/ErrorText';
 
 import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 function LoginForm({ navigation }) {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { handleAuth } = useContext(AuthContext);
 
   const { handleChange, handleSubmit } = useFormik({
     initialValues: { email: '', password: '' },
     onSubmit: values => {
+      setEmailError('');
+      setPasswordError('');
+      setIsLoading(true);
       const { email, password } = values;
 
       api.post('/user/tryAuth', { email, password })
         .then(resp => {
+          setIsLoading(false);
           if (resp.data.message === 'user-authenticated') {
-            console.log('test');
             handleAuth(resp.data.token);
           }
         })
@@ -45,8 +48,7 @@ function LoginForm({ navigation }) {
   });
 
   function onSubmitErrorHandler(errorMessage) {
-    setEmailError('');
-    setPasswordError('');
+    setIsLoading(false);
 
     switch (errorMessage) {
       case 'wrong-email':
@@ -78,11 +80,16 @@ function LoginForm({ navigation }) {
     return inputStyle.defaultLoginInput;
   };
 
-  function test() {
-    AsyncStorage.getItem('authToken')
-      .then(resp => console.log(resp))
-      .catch(error => console.log(error));
-    // AsyncStorage.removeItem('authToken');
+  function renderSubmitButton() {
+    if (isLoading) {
+      return <ActivityIndicator size="large" color="#52B788" />
+    }
+
+    return (
+      <TouchableHighlight underlayColor="#40916C" onPress={handleSubmit} style={inputStyle.submitButton}>
+        <Text style={textStyle.submitButtonText}>Entrar</Text>
+      </TouchableHighlight>
+    );
   };
 
   return (
@@ -136,15 +143,13 @@ function LoginForm({ navigation }) {
           />
           <Text style={textStyle.rememberMeText}>Lembrar-me</Text>
         </View>
-        <TouchableOpacity onPress={test}>
+        <TouchableOpacity>
           <Text style={[textStyle.rememberMeText, { color: '#95D5B2' }]}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
       </View>
       <View>
         <View style={containerStyle.submitContainer}>
-          <TouchableHighlight underlayColor="#40916C" onPress={handleSubmit} style={inputStyle.submitButton}>
-            <Text style={textStyle.submitButtonText}>Entrar</Text>
-          </TouchableHighlight>
+          {renderSubmitButton()}
           <Text style={textStyle.dividerText}>ou</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text style={textStyle.registerText}>Registre-se</Text>

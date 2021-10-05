@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, TextInput, TouchableHighlight, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, TouchableHighlight, Text, ActivityIndicator } from 'react-native';
 
 import api from '../../../api';
 
@@ -15,15 +15,20 @@ import ErrorText from './ErrorText';
 import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
 
 function SignupForm({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { handleChange, handleSubmit, values, errors, touched } = useFormik({
     initialValues: { userName: '', userEmail: '', userPhone: '', userPassword: '' },
     onSubmit: async values => {
+      setIsLoading(true);
       const { userEmail, userName, userPhone, userPassword } = values;
       try {
         const requestResp = await api.post('/user/store', { userName, userEmail, userPhone, userPassword });
         await AsyncStorage.setItem('snackbarOpen', 'true');
+        setIsLoading(false);
         navigation.navigate('Login');
       } catch(error) {
+        setIsLoading(false);
         console.warn(error.response.data);
       }
     },
@@ -49,6 +54,18 @@ function SignupForm({ navigation }) {
     if (touched && error) {
       return <ErrorText>{error}</ErrorText>
     }
+  };
+
+  function renderSubmitButton() {
+    if (isLoading) {
+      return <ActivityIndicator style={{ marginTop: 100 }} size="large" color="#52B788" />
+    }
+
+    return (
+      <TouchableHighlight onPress={handleSubmit} underlayColor="#40916C" style={inputStyle.submitSignupForm}>
+        <Text style={textStyle.submitText}>Cadastre-se</Text>
+      </TouchableHighlight>
+    );
   };
 
   return (
@@ -128,9 +145,7 @@ function SignupForm({ navigation }) {
         />
         {renderErrorText(touched.userPassword, errors.userPassword)}
       </View>
-      <TouchableHighlight onPress={handleSubmit} underlayColor="#40916C" style={inputStyle.submitSignupForm}>
-        <Text style={textStyle.submitText}>Cadastre-se</Text>
-      </TouchableHighlight>
+      {renderSubmitButton()}
     </View>
   );
 };

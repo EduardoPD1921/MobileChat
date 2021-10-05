@@ -20,6 +20,9 @@ function Routes() {
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen} 
+          options={{
+            headerShown: false
+          }}
         />
       );
     }
@@ -31,11 +34,9 @@ function Routes() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={
-            {
-              cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-            }
-          } 
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+          }} 
         />
       );
     }
@@ -45,29 +46,25 @@ function Routes() {
         <Stack.Screen
           name="Login"
           component={Login}
-          options={
-            {
-              headerTitle: 'Entrar',
-              headerStyle: { backgroundColor: '#52B788' },
-              headerTintColor: 'white',
-              headerTitleAlign: 'center',
-              headerTitleStyle: { fontFamily: 'Poppins-Medium' }
-            }
-          } 
+          options={{
+            headerTitle: 'Entrar',
+            headerStyle: { backgroundColor: '#52B788' },
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerTitleStyle: { fontFamily: 'Poppins-Medium' } 
+          }} 
         />
         <Stack.Screen
           name="Signup"
           component={Signup}
-          options={
-            {
-              headerTitle: 'Cadastro',
-              headerStyle: { backgroundColor: '#52B788' },
-              headerTintColor: 'white',
-              headerTitleAlign: 'center',
-              headerTitleStyle: { fontFamily: 'Poppins-Medium' },
-              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-            }
-          }
+          options={{
+            headerTitle: 'Cadastro',
+            headerStyle: { backgroundColor: '#52B788' },
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerTitleStyle: { fontFamily: 'Poppins-Medium' },
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS 
+          }}
         />
       </>
     )
