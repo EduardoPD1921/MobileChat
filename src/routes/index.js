@@ -1,19 +1,49 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
+import SplashScreen from '../screens/SplashScreen';
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import Home from '../screens/Home';
 
 function Routes() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen 
-          name="Login" 
+  const { authenticated, isLoading } = useContext(AuthContext);
+
+  function renderSplashScreen() {
+    if (isLoading) {
+      return (
+        <Stack.Screen
+          name="SplashScreen"
+          component={SplashScreen} 
+        />
+      );
+    }
+  };
+
+  function renderScreens() {
+    if (authenticated) {
+      return (
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={
+            {
+              cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+            }
+          } 
+        />
+      );
+    }
+
+    return (
+      <>
+        <Stack.Screen
+          name="Login"
           component={Login}
           options={
             {
@@ -39,15 +69,15 @@ function Routes() {
             }
           }
         />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={
-            {
-              cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-            }
-          }
-        />
+      </>
+    )
+  };
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {renderSplashScreen()}
+        {renderScreens()}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -38,7 +38,6 @@ function LoginForm({ navigation }) {
           if (resp.data.message === 'user-authenticated') {
             console.log('test');
             handleAuth(resp.data.token);
-            navigation.replace('Home');
           }
         })
         .catch(error => onSubmitErrorHandler(error.response.data.message));

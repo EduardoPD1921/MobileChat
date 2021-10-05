@@ -7,6 +7,7 @@ const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     AsyncStorage.getItem('authToken')
@@ -17,7 +18,11 @@ function AuthProvider({ children }) {
         }
       })
       .catch(error => console.log(error));
-  });
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   function handleAuth(authToken) {
     AsyncStorage.setItem('authToken', JSON.stringify(authToken))
@@ -38,7 +43,7 @@ function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ authenticated, handleAuth, handleLogout }}>
+    <AuthContext.Provider value={{ authenticated, isLoading, handleAuth, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );
