@@ -82,7 +82,7 @@ function LoginForm({ navigation }) {
 
   function renderSubmitButton() {
     if (isLoading) {
-      return <ActivityIndicator size="large" color="#52B788" />
+      return <ActivityIndicator style={{ marginTop: 14 }} size="large" color="#52B788" />
     }
 
     return (

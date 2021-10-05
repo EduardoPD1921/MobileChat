@@ -35,23 +35,27 @@ function Routes() {
           name="Home"
           component={Home}
           options={{
-            cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+            cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+            headerShown: false
           }} 
         />
       );
     }
 
     return (
-      <>
+      <Stack.Group
+        screenOptions={{
+          headerStyle: { backgroundColor: '#52B788' },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontFamily: 'Poppins-Medium' }
+        }}
+      >
         <Stack.Screen
           name="Login"
           component={Login}
           options={{
-            headerTitle: 'Entrar',
-            headerStyle: { backgroundColor: '#52B788' },
-            headerTintColor: 'white',
-            headerTitleAlign: 'center',
-            headerTitleStyle: { fontFamily: 'Poppins-Medium' } 
+            headerTitle: 'Entrar' 
           }} 
         />
         <Stack.Screen
@@ -59,14 +63,10 @@ function Routes() {
           component={Signup}
           options={{
             headerTitle: 'Cadastro',
-            headerStyle: { backgroundColor: '#52B788' },
-            headerTintColor: 'white',
-            headerTitleAlign: 'center',
-            headerTitleStyle: { fontFamily: 'Poppins-Medium' },
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS 
           }}
         />
-      </>
+      </Stack.Group>
     )
   };
 
