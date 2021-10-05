@@ -6,6 +6,7 @@ const Stack = createStackNavigator();
 
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
+import Home from '../screens/Home';
 
 function Routes() {
   return (
@@ -35,6 +36,15 @@ function Routes() {
               headerTitleAlign: 'center',
               headerTitleStyle: { fontFamily: 'Poppins-Medium' },
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+            }
+          }
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={
+            {
+              cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
             }
           }
         />
