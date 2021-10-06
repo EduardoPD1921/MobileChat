@@ -25,7 +25,6 @@ export const iconStyle = StyleSheet.create({
   menu: {
     marginLeft: 15,
     borderRadius: 30,
-    // width: 40
   },
   search: {
     marginRight: 15
