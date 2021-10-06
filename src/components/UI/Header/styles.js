@@ -23,14 +23,12 @@ export const containerStyle = StyleSheet.create({
 
 export const iconStyle = StyleSheet.create({
   menu: {
-    color: 'white',
-    marginLeft: 10
+    marginLeft: 15,
+    borderRadius: 30,
+    // width: 40
   },
   search: {
     marginRight: 15
-  },
-  settings: {
-    marginRight: 5
   }
 });
 
@@ -39,6 +37,6 @@ export const textStyle = StyleSheet.create({
     color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
-    marginLeft: 15
+    marginLeft: 20
   }
 });

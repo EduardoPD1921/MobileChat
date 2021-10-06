@@ -3,8 +3,10 @@ import { AuthContext } from '../contexts/AuthContext';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 import SplashScreen from '../screens/SplashScreen';
 import Login from '../screens/Login';
@@ -13,6 +15,14 @@ import Home from '../screens/Home';
 
 function Routes() {
   const { authenticated, isLoading } = useContext(AuthContext);
+
+  function AuthDrawerNavigation() {
+    return (
+      <Drawer.Navigator>
+        <Drawer.Screen options={{ headerShown: false }} name="Home" component={Home} />
+      </Drawer.Navigator>
+    );
+  };
 
   function renderSplashScreen() {
     if (isLoading) {
@@ -32,8 +42,8 @@ function Routes() {
     if (authenticated) {
       return (
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Drawer"
+          component={AuthDrawerNavigation}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
             headerShown: false
