@@ -11,5 +11,16 @@ export const containerStyle = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  contactIconContainer: {
+    position: 'absolute',
+    backgroundColor: '#0EABF4',
+    width: 40,
+    height: 40,
+    bottom: 20,
+    right: 20,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
