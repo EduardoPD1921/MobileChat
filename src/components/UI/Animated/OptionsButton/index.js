@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { View, Animated, Text, TouchableOpacity } from 'react-native';
+import { Animated, Pressable } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import { containerStyle } from './styles';
 
-function OptionsButton() {
+function OptionsButton({ navigation }) {
   const [rotateAnimation] = useState(new Animated.Value(0));
   const [contactIconAnimation] = useState(new Animated.Value(0));
   const [groupIconXAnimation] = useState(new Animated.Value(0));
   const [groupIconYAnimation] = useState(new Animated.Value(0));
   const [isOpenOptions, setIsOpenOptions] = useState(false);
+
+  const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   function openOptions() {
     Animated.parallel([
@@ -73,16 +75,27 @@ function OptionsButton() {
 
   return (
     <>
-      <Animated.View style={[containerStyle.contactIconContainer, { transform: [{ translateX: contactIconAnimation }, { translateY: contactIconAnimation }] }]}>
-        <AntDesignIcon name="adduser" color="white" size={20} />
+      <Animated.View 
+        style={[containerStyle.contactIconContainer, 
+        { transform: [{ translateX: contactIconAnimation }, { translateY: contactIconAnimation }] }]}
+      >
+        <AntDesignIcon onPress={() => navigation.navigate('AddContact')} name="adduser" color="white" size={20} />
       </Animated.View>
-      <Animated.View style={[containerStyle.contactIconContainer, { backgroundColor: '#5F66CD' }, { transform: [{ translateY: groupIconYAnimation }, { translateX: groupIconXAnimation }] }]}>
+      <Animated.View 
+        style={[containerStyle.contactIconContainer, 
+        { backgroundColor: '#5F66CD' }, 
+        { transform: [{ translateY: groupIconYAnimation }, { translateX: groupIconXAnimation }] }]}
+      >
         <MaterialIcon name="group-add" color="white" size={20} />
       </Animated.View>
-      <Animated.View style={[containerStyle.mainIconContainer, { transform: [{ rotate: interpolateRotating }] }]}>
-        <AntDesignIcon onPress={toggleOptions} name="plus" color="white" size={25} />
+      <AnimatedPressable 
+        onPress={toggleOptions} 
+        android_ripple={{ color: '#D4EDE1', radius: 30, borderless: true }} 
+        style={[containerStyle.mainIconContainer, { transform: [{ rotate: interpolateRotating }] }]}
+      > 
+        <AntDesignIcon name="plus" color="white" size={25} />
         {isOpenOptions ? openOptions() : closeOptions()}
-      </Animated.View>
+      </AnimatedPressable>
     </>
   );
 };

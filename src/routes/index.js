@@ -12,6 +12,7 @@ import SplashScreen from '../screens/SplashScreen';
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import Home from '../screens/Home';
+import AddContact from '../screens/AddContact';
 
 function Routes() {
   const { authenticated, isLoading } = useContext(AuthContext);
@@ -20,9 +21,19 @@ function Routes() {
     return (
       <Drawer.Navigator>
         <Drawer.Screen options={{ headerShown: false }} name="Home" component={Home} />
+        <Drawer.Screen options={{ headerShown: false }} name="AddContact" component={AddContact} />
       </Drawer.Navigator>
     );
   };
+
+  // function AuthDrawerNavigation() {
+  //   return (
+  //     <Stack.Navigator>
+  //       <Stack.Screen options={{ headerShown: false }} name="Home" component={Home} />
+  //       <Stack.Screen options={{ headerShown: false }} name="AddContact" component={AddContact} />
+  //     </Stack.Navigator>
+  //   );
+  // };
 
   function renderSplashScreen() {
     if (isLoading) {

@@ -9,7 +9,7 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 
 import LoginForm from '../../components/Forms/LoginForm';
-import Snackbar from '../../components/UI/Snackbar';
+import Snackbar from '../../components/UI/Animated/Snackbar';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

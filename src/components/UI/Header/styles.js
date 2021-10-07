@@ -23,7 +23,6 @@ export const containerStyle = StyleSheet.create({
 
 export const iconStyle = StyleSheet.create({
   menu: {
-    marginLeft: 15,
     borderRadius: 30,
   },
   search: {
