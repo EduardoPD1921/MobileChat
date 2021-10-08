@@ -9,7 +9,7 @@ import { containerStyle, inputStyle } from './styles';
 
 function AnimatedHeader() {
   const [headerOpeningAnimation] = useState(new Animated.Value(0));
-  const [arrowBackOpacity] = useState(new Animated.Value(0));
+  const [iconOpacity] = useState(new Animated.Value(0));
   const [searchInputWidth] = useState(new Animated.Value(1));
 
   const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -60,7 +60,7 @@ function AnimatedHeader() {
         duration: 200,
         useNativeDriver: false
       }),
-      Animated.timing(arrowBackOpacity, {
+      Animated.timing(iconOpacity, {
         toValue: 1,
         duration: 200,
         delay: 200,
@@ -74,9 +74,10 @@ function AnimatedHeader() {
       Animated.timing(searchInputWidth, {
         toValue: 1,
         duration: 200,
+        delay: 150,
         useNativeDriver: false
       }),
-      Animated.timing(arrowBackOpacity, {
+      Animated.timing(iconOpacity, {
         toValue: 0,
         duration: 200,
         useNativeDriver: true
@@ -93,10 +94,10 @@ function AnimatedHeader() {
     <Animated.View style={[containerStyle.headerContainer, { transform: [{ translateY: headerOpeningAnimation }] }]}>
       <AnimatedPressable 
         android_ripple={{ color: '#D4EDE1', borderless: true, radius: 15 }} 
-        style={[containerStyle.arrowBackContainer, { opacity: arrowBackOpacity }]}
+        style={[containerStyle.arrowBackContainer, { opacity: iconOpacity }]}
         onPress={Keyboard.dismiss}
       >
-        <MaterialIcon name="arrow-back" color="white" size={30} />
+        <MaterialIcon name="arrow-back" color="white" size={20} />
       </AnimatedPressable>
       <AnimatedTextInput 
         placeholder="Pesquisar" 
@@ -105,9 +106,9 @@ function AnimatedHeader() {
       />
       <AnimatedPressable
         android_ripple={{ color: '#D4EDE1', borderless: true, radius: 17 }}
-        style={[containerStyle.searchContainer, { opacity: arrowBackOpacity }]}
+        style={[containerStyle.searchContainer, { opacity: iconOpacity }]}
       >
-        <IonIcon name="search" color="white" size={25} />
+        <IonIcon name="search" color="white" size={20} />
       </AnimatedPressable>
     </Animated.View>
   );

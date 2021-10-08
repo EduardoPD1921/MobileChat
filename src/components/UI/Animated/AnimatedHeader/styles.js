@@ -12,11 +12,11 @@ export const containerStyle = StyleSheet.create({
   },
   arrowBackContainer: {
     position: 'absolute',
-    left: 10
+    left: 15
   },
   searchContainer: {
     position: 'absolute',
-    right: 10
+    right: 15
   }
 });
 
