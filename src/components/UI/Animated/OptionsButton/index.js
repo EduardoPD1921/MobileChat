@@ -75,19 +75,24 @@ function OptionsButton({ navigation }) {
 
   return (
     <>
-      <Animated.View 
-        style={[containerStyle.contactIconContainer, 
-        { transform: [{ translateX: contactIconAnimation }, { translateY: contactIconAnimation }] }]}
+      <AnimatedPressable
+        style={[containerStyle.contactIconContainer,
+          { transform: [{ translateX: contactIconAnimation }, { translateY: contactIconAnimation }] }
+        ]}
+        android_ripple={{ color: '#D4EDE1' }}
+        onPress={() => navigation.navigate('AddContact')}
       >
-        <AntDesignIcon onPress={() => navigation.navigate('AddContact')} name="adduser" color="white" size={20} />
-      </Animated.View>
-      <Animated.View 
-        style={[containerStyle.contactIconContainer, 
-        { backgroundColor: '#5F66CD' }, 
-        { transform: [{ translateY: groupIconYAnimation }, { translateX: groupIconXAnimation }] }]}
+        <AntDesignIcon name="adduser" color="white" size={20} />
+      </AnimatedPressable>
+      <AnimatedPressable
+        style={[containerStyle.contactIconContainer,
+          { backgroundColor: '#5F66CD' },
+          { transform: [{ translateY: groupIconYAnimation }, { translateX: groupIconXAnimation }] }
+        ]}
+        android_ripple={{ color: '#D4EDE1' }}
       >
         <MaterialIcon name="group-add" color="white" size={20} />
-      </Animated.View>
+      </AnimatedPressable>
       <AnimatedPressable 
         onPress={toggleOptions} 
         android_ripple={{ color: '#D4EDE1', radius: 30, borderless: true }} 
