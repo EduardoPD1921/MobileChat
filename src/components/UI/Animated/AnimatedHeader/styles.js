@@ -23,6 +23,7 @@ export const containerStyle = StyleSheet.create({
 export const inputStyle = StyleSheet.create({
   search: {
     height: 40,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)'
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    color: 'white'
   }
 });

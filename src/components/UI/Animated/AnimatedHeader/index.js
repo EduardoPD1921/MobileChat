@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Animated, TextInput, Keyboard, Pressable } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import api from '../../../../api';
+
+import { useFormik } from 'formik';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -12,7 +15,13 @@ function AnimatedHeader() {
   const [iconOpacity] = useState(new Animated.Value(0));
   const [searchInputWidth] = useState(new Animated.Value(1));
 
-  const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+  const { handleChange, handleSubmit } = useFormik({
+    initialValues: { search: '' },
+    onSubmit: values => {
+      console.log(values);
+    }
+  });
+
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   const isFocused = useIsFocused();
@@ -99,14 +108,19 @@ function AnimatedHeader() {
       >
         <MaterialIcon name="arrow-back" color="white" size={20} />
       </AnimatedPressable>
-      <AnimatedTextInput 
-        placeholder="Pesquisar" 
-        placeholderTextColor="white" 
-        style={[inputStyle.search, { width: interpolateWidth }]} 
-      />
+      <Animated.View style={{ width: interpolateWidth }}>
+        <TextInput 
+          placeholder="Pesquisar" 
+          placeholderTextColor="white" 
+          style={inputStyle.search}
+          onChangeText={handleChange('search')}
+          onSubmitEditing={handleSubmit}
+        />
+      </Animated.View>
       <AnimatedPressable
         android_ripple={{ color: '#D4EDE1', borderless: true, radius: 17 }}
         style={[containerStyle.searchContainer, { opacity: iconOpacity }]}
+        onPress={handleSubmit}
       >
         <IonIcon name="search" color="white" size={20} />
       </AnimatedPressable>
