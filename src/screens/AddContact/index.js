@@ -1,12 +1,34 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 
 import AnimatedHeader from '../../components/UI/Animated/AnimatedHeader';
 
 function AddContact() {
+  const [searchedUsers, setSearchedUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  function renderFlastList() {
+    if (isLoading) {
+      return <ActivityIndicator size="large" color="#52B788" />
+    }
+
+    return (
+      <FlatList
+        style={{ marginTop: 60 }}
+        data={searchedUsers}
+        renderItem={({ item }) => <Text>{item.name} - {item.email}</Text>} 
+      />
+    );
+  };
+
   return (
-    <View style={{ flex: 1 }}>
-      <AnimatedHeader />
+    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
+      <AnimatedHeader
+        setSearchedUsers={setSearchedUsers}
+        setIsLoading={setIsLoading}
+      />
+
+      {renderFlastList()}
     </View>
   );
 };
