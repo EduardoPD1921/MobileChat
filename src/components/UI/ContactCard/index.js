@@ -6,11 +6,23 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { containerStyle, textStyle } from './styles';
 
-function ContactCard({ userName, userEmail, userId }) {
+function ContactCard({ userName, userEmail, userId, isInviteSended }) {
   function addContact() {
     api.put('/user/sendContactInvite', { receiverId: userId })
       .then(resp => console.log(resp.data))
       .catch(error => console.log(error.response.data));
+  };
+
+  function renderAddContactButton() {
+    if (isInviteSended) {
+      return <Text>Teste</Text>
+    }
+
+    return (
+      <Pressable onPress={addContact} style={containerStyle.addContactButton} android_ripple={{ color: '#D4EDE1' }}>
+        <Text style={textStyle.whiteText}>Adicionar</Text>
+      </Pressable>
+    );
   };
 
   return (
@@ -23,9 +35,7 @@ function ContactCard({ userName, userEmail, userId }) {
         <Text style={textStyle.userEmail}>{userEmail}</Text>
       </View>
       <View style={containerStyle.addContact}>
-        <Pressable onPress={addContact} style={containerStyle.addContactButton} android_ripple={{ color: '#D4EDE1' }}>
-          <Text style={textStyle.whiteText}>Adicionar</Text>
-        </Pressable>
+        {renderAddContactButton()}  
       </View>
     </View>
   );
