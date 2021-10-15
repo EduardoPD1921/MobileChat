@@ -35,6 +35,8 @@ function AddContact() {
                 userName={item.name}
                 userEmail={item.email}
                 isInviteSended={!!isInviteSended} 
+                setSearchedUsers={setSearchedUsers}
+                searchedUsers={searchedUsers}
               />
             );
           }
