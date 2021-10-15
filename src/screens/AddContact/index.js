@@ -19,6 +19,7 @@ function AddContact() {
         data={searchedUsers}
         renderItem={({ item }) => (
           <ContactCard
+            userId={item._id}
             userName={item.name}
             userEmail={item.email} 
           />
