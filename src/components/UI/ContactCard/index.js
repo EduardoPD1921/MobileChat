@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../../contexts/AuthContext';
 import { View, Text, Pressable } from 'react-native';
 import api from '../../../api';
 
@@ -6,7 +7,9 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { containerStyle, textStyle } from './styles';
 
-function ContactCard({ userName, userEmail, userId, isInviteSended, setSearchedUsers, searchedUsers, authUserInfo }) {
+function ContactCard({ userName, userEmail, userId, isInviteSended, setSearchedUsers, searchedUsers }) {
+  const { authUserInfo } = useContext(AuthContext);
+
   function addContact() {
     api.put('/user/sendContactInvite', { receiverId: userId })
       .then(resp => {

@@ -40,7 +40,7 @@ function LoginForm({ navigation }) {
         .then(resp => {
           setIsLoading(false);
           if (resp.data.message === 'user-authenticated') {
-            handleAuth(resp.data.token);
+            handleAuth(resp.data.token, resp.data.userInfo);
           }
         })
         .catch(error => onSubmitErrorHandler(error.response.data.message));

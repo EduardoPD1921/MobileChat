@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 import { View, FlatList, ActivityIndicator } from 'react-native';
-import api from '../../api';
 
 import AnimatedHeader from '../../components/UI/Animated/AnimatedHeader';
 import ContactCard from '../../components/UI/ContactCard';
 
 function AddContact() {
-  const [searchedUsers, setSearchedUsers] = useState([]);
-  const [authUserInfo, setAuthUserInfo] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const { authUserInfo } = useContext(AuthContext);
 
-  useEffect(() => {
-    api.get('/user/decodeAuthToken')
-      .then(resp => setAuthUserInfo(resp.data.userInfo))
-      .catch(error => console.log(error.response.data));
-  }, []);
+  const [searchedUsers, setSearchedUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   function renderFlastList() {
     if (isLoading) {
@@ -37,7 +32,6 @@ function AddContact() {
                 isInviteSended={!!isInviteSended} 
                 setSearchedUsers={setSearchedUsers}
                 searchedUsers={searchedUsers}
-                authUserInfo={authUserInfo}
               />
             );
           }

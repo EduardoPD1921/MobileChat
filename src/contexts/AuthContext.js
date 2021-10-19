@@ -7,43 +7,56 @@ const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
+  const [authUserInfo, setAuthUserInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    AsyncStorage.getItem('authToken')
-      .then(resp => {
-        if (resp) {
-          api.defaults.headers.Authorization = `${JSON.parse(resp)}`;
-          setAuthenticated(true);
-        }
-      })
-      .catch(error => console.log(error));
+  useEffect(async () => {
+    try {
+      const authToken = await AsyncStorage.getItem('authToken');
+  
+      if (authToken) {
+        api.defaults.headers.Authorization = `${JSON.parse(authToken)}`;
+        const userInfo = await AsyncStorage.getItem('userInfo');
+        
+        setAuthUserInfo(JSON.parse(userInfo));
+        setAuthenticated(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
   }, []);
 
-  function handleAuth(authToken) {
-    AsyncStorage.setItem('authToken', JSON.stringify(authToken))
-      .then(_ => {
-        api.defaults.headers.Authorization = `${authToken}`;
-        setAuthenticated(true);
-      })
-      .catch(error => console.log(error));
+  async function handleAuth(authToken, userInfo) {
+    try {
+      await AsyncStorage.setItem('authToken', JSON.stringify(authToken));
+      await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+  
+      api.defaults.Authorization = `${authToken}`;
+      setAuthUserInfo(userInfo);
+      setAuthenticated(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  function handleLogout() {
-    AsyncStorage.removeItem('authToken')
-      .then(_ => {
-        setAuthenticated(false);
-        api.defaults.headers.Authorization = null;
-      })
-      .catch(error => console.log(error));
+  async function handleLogout() {
+    try {
+      await AsyncStorage.removeItem('authToken');
+      await AsyncStorage.removeItem('userInfo');
+
+      setAuthenticated(false);
+      api.defaults.Authorization = null;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ authenticated, isLoading, handleAuth, handleLogout }}>
+    <AuthContext.Provider value={{ authenticated, authUserInfo, isLoading, handleAuth, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

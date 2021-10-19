@@ -14,12 +14,16 @@ import Signup from '../screens/Signup';
 import Home from '../screens/Home';
 import AddContact from '../screens/AddContact';
 
+import DrawerMenu from '../components/UI/DrawerMenu';
+
 function Routes() {
   const { authenticated, isLoading } = useContext(AuthContext);
 
   function AuthDrawerNavigation() {
     return (
-      <Drawer.Navigator>
+      <Drawer.Navigator
+        drawerContent={props => <DrawerMenu {...props} />}
+      >
         <Drawer.Screen options={{ headerShown: false }} name="Home" component={Home} />
         <Drawer.Screen options={{ headerShown: false }} name="AddContact" component={AddContact} />
       </Drawer.Navigator>
