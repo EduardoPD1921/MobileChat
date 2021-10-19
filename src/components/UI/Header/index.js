@@ -22,12 +22,18 @@ function Header({ navigation }) {
             size={20} 
           />
         </Pressable>
-        <Text style={textStyle.headerTitle}>Chats</Text>
+        <Text style={textStyle.headerTitle}>Mobilechat</Text>
       </View>
       <View style={containerStyle.searchContainer}>
         <IonIcon
           style={iconStyle.search}
           name="search"
+          color="white"
+          size={20} 
+        />
+        <IonIcon
+          style={iconStyle.search}
+          name="notifications-outline"
           color="white"
           size={20} 
         />

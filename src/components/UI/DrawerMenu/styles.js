@@ -13,9 +13,10 @@ export const containerStyle = StyleSheet.create({
   userInfoContainer: {
     flexDirection: 'column'
   },
-  drawerItems: {
-    
-  }
+  drawerItem: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
 });
 
 export const imageStyle = StyleSheet.create({
@@ -36,5 +37,9 @@ export const textStyle = StyleSheet.create({
     marginLeft: 10,
     marginTop: 2,
     color: '#7b7b7b'
+  },
+  drawerItemText: {
+    marginLeft: 25,
+    fontFamily: 'Roboto-Medium'
   }
 });

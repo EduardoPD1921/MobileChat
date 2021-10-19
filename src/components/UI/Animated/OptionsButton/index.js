@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Animated, Pressable } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 
 import { containerStyle } from './styles';
 
@@ -82,7 +83,7 @@ function OptionsButton({ navigation }) {
         android_ripple={{ color: '#D4EDE1' }}
         onPress={() => navigation.navigate('AddContact')}
       >
-        <AntDesignIcon name="adduser" color="white" size={20} />
+        <FontAwesomeIcon name="user-plus" color="white" size={13} />
       </AnimatedPressable>
       <AnimatedPressable
         style={[containerStyle.contactIconContainer,
