@@ -16,7 +16,7 @@ function Home({ navigation }) {
       <OptionsButton navigation={navigation} />
       <Header navigation={navigation} setIsTabOpen={setIsTabOpen} />
       <Text>Home</Text>
-      <NotificationsTab isTabOpen={isTabOpen} />
+      <NotificationsTab isTabOpen={isTabOpen} setIsTabOpen={setIsTabOpen} />
     </View>
   );
 };
