@@ -6,7 +6,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, iconStyle, textStyle } from './styles';
 
-function Header({ navigation }) {
+function Header({ navigation, setIsTabOpen }) {
   return (
     <View style={containerStyle.mainContainer}>
       <View style={containerStyle.titleContainer}>
@@ -32,6 +32,7 @@ function Header({ navigation }) {
           size={20} 
         />
         <IonIcon
+          onPress={() => setIsTabOpen(true)}
           style={iconStyle.search}
           name="notifications-outline"
           color="white"
