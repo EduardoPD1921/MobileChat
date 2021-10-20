@@ -4,9 +4,15 @@ export const containerStyle = StyleSheet.create({
   notificationTabContainer: {
     position: 'absolute',
     width: '100%',
-    height: 150,
-    backgroundColor: 'rgba(0, 0, 255, 0.5)',
-    // borderRadius: 15,
-    bottom: -150
+    height: 300,
+    backgroundColor: 'white',
+    bottom: -300
+  },
+  modalBackground: {
+    position: 'absolute',
+    backgroundColor: 'black',
+    height: '100%',
+    width: '100%',
+    zIndex: -1
   }
 });
