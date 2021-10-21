@@ -6,13 +6,14 @@ export const containerStyle = StyleSheet.create({
     width: '100%',
     height: 300,
     backgroundColor: 'white',
-    bottom: -300
+    bottom: -300,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20
   },
   modalBackground: {
     position: 'absolute',
-    backgroundColor: 'black',
     height: '100%',
     width: '100%',
-    zIndex: -1
+    backgroundColor: 'black',
   }
 });
