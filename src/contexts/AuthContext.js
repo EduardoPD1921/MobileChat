@@ -13,7 +13,7 @@ function AuthProvider({ children }) {
   useEffect(async () => {
     try {
       const authToken = await AsyncStorage.getItem('authToken');
-  
+
       if (authToken) {
         api.defaults.headers.Authorization = `${JSON.parse(authToken)}`;
         const userInfo = await AsyncStorage.getItem('userInfo');
@@ -48,8 +48,8 @@ function AuthProvider({ children }) {
       await AsyncStorage.removeItem('authToken');
       await AsyncStorage.removeItem('userInfo');
 
-      setAuthenticated(false);
       api.defaults.Authorization = null;
+      setAuthenticated(false);
     } catch (error) {
       console.log(error);
     }

@@ -7,14 +7,14 @@ import Animated, {
   runOnJS,
   withDelay
 } from 'react-native-reanimated';
-import { TouchableWithoutFeedback, BackHandler } from 'react-native';
+import { TouchableWithoutFeedback, BackHandler, View, StatusBar, Text, FlatList } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
-import { containerStyle } from './styles';
+import { containerStyle, textStyle } from './styles';
 
 function NotificationsTab({ isTabOpen, setIsTabOpen }) {
-  const translateY = useSharedValue(-300);
+  const translateY = useSharedValue(-400);
   const modalBackgroundOpacity = useSharedValue(0);
   const modalBackgroundZIndex = useSharedValue(-1);
 
@@ -43,8 +43,8 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
       }
     },
     onEnd: (event) => {
-      if (translateY.value < -150) {
-        translateY.value = withTiming(-300, { duration: 200 });
+      if (translateY.value < -200) {
+        translateY.value = withTiming(-400, { duration: 200 });
         modalBackgroundOpacity.value = withDelay(200, withTiming(0, { duration: 100 }));
         modalBackgroundZIndex.value = withDelay(200, withTiming(-1, { duration: 200 }));
         runOnJS(setIsTabOpen)(false);
@@ -62,10 +62,16 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
   };
 
   function closeNotificationTab() {
-    translateY.value = withTiming(-300, { duration: 200 });
+    translateY.value = withTiming(-400, { duration: 200 });
     modalBackgroundOpacity.value = withDelay(200, withTiming(0, { duration: 200 }));
     modalBackgroundZIndex.value = withDelay(200, withTiming(-1, { duration: 200 }));
     setIsTabOpen(false);
+  };
+
+  function statusBarColor() {
+    if (isTabOpen) {
+      return <StatusBar backgroundColor="#326e52" />
+    }
   };
         
   const verticalGestureStyle = useAnimatedStyle(() => {
@@ -83,11 +89,19 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
         
   return (
     <>
+      {statusBarColor()}
       <TouchableWithoutFeedback onPress={() => closeNotificationTab()}>
         <Animated.View style={[containerStyle.modalBackground, modalBackgroundAnimation]} />
       </TouchableWithoutFeedback>
       <PanGestureHandler onGestureEvent={panGestureEvent}>
-        <Animated.View style={[containerStyle.notificationTabContainer, verticalGestureStyle]} />
+        <Animated.View style={[containerStyle.notificationTabContainer, verticalGestureStyle]} >
+          <View style={containerStyle.gestureIndicatorContainer}>
+            <View style={containerStyle.gestureIndicator} />
+          </View>
+          <View>
+            <Text style={textStyle.notificationTitle}>Notificações</Text>
+          </View>
+        </Animated.View>
       </PanGestureHandler>
       {isTabOpen ? openNotificationTab() : null}
     </>

@@ -31,13 +31,14 @@ function Header({ navigation, setIsTabOpen }) {
           color="white"
           size={20} 
         />
-        <IonIcon
-          onPress={() => setIsTabOpen(true)}
-          style={iconStyle.search}
-          name="notifications-outline"
-          color="white"
-          size={20} 
-        />
+        <Pressable style={{ marginRight: 15 }} onPress={() => setIsTabOpen(true)} android_ripple={{ color: '#D4EDE1', borderless: true }}>
+          <IonIcon
+            style={[iconStyle.search, { marginRight: 0 }]}
+            name="notifications-outline"
+            color="white"
+            size={20} 
+          />
+        </Pressable>
       </View>
     </View>
   );
