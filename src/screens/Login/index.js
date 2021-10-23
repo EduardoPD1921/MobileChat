@@ -13,8 +13,8 @@ import Snackbar from '../../components/UI/Animated/Snackbar';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { io } from 'socket.io-client';
-const socket = io('http://127.0.0.1:8000');
+// import { io } from 'socket.io-client';
+// const socket = io('http://127.0.0.1:8000');
 
 import { containerStyle, textStyle } from './styles';
 

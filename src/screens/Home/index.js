@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { View, Text, StatusBar, Button } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
-import api from '../../api';
+
+import { io } from 'socket.io-client';
+const socket = io('http://localhost:8000');
 
 import Header from '../../components/UI/Header';
 import OptionsButton from '../../components/UI/Animated/OptionsButton';
@@ -11,18 +12,22 @@ import NotificationsTab from '../../components/UI/Animated/NotificationsTab';
 import { containerStyle } from './styles';
 
 function Home({ navigation }) {
+  const { authUserInfo } = useContext(AuthContext);
+
   const [isTabOpen, setIsTabOpen] = useState(false);
   const [userNotifications, setUserNotifications] = useState();
 
-  const isFocused = useIsFocused();
-
-  const { authUserInfo } = useContext(AuthContext);
-
   useEffect(() => {
-    console.log(api.defaults.Authorization);
-    api.get(`/user/getUserNotifications/${authUserInfo.id}`)
-      .then(resp => console.log(resp.data))
-      .catch(error => console.log(error.response.data));
+    function getUserNotifications(notifications) {
+      setUserNotifications(notifications);
+    };
+
+    socket.on('getUserNotifications', getUserNotifications);
+    socket.emit('userConnected', authUserInfo);
+
+    return () => {
+      socket.off('getUserNotifications', getUserNotifications);
+    };
   }, []);
 
   return (
