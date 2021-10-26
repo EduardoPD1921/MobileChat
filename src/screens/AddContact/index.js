@@ -1,6 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { View, FlatList, ActivityIndicator } from 'react-native';
+
+import socket from '../../socket';
 
 import AnimatedHeader from '../../components/UI/Animated/AnimatedHeader';
 import ContactCard from '../../components/UI/ContactCard';
@@ -10,6 +12,18 @@ function AddContact() {
 
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    function getSendedNotificationInvite(notification) {
+      console.log(notification);
+    };
+
+    socket.on('getSendedNotificationInvite', getSendedNotificationInvite);
+
+    return () => {
+      socket.off('getSendedNotificationInvite', getSendedNotificationInvite);
+    };
+  }, []);
 
   function renderFlastList() {
     if (isLoading) {
