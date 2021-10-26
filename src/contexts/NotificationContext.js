@@ -8,17 +8,16 @@ const NotificationContext = createContext();
 function NotificationProvider({ children }) {
   const { isLoading, authUserInfo } = useContext(AuthContext);
 
-  const [userNotifications, setUserNotifications] = useState();
+  const [userNotifications, setUserNotifications] = useState([]);
 
   useEffect(() => {
     function getUserNotifications(user) {
-      console.log('test');
       setUserNotifications(user.notifications);
     };
 
     function contactInviteReceived(invite) {
-      console.log(userNotifications);
-      const userNotificationsUpdatedArr = userNotifications.push(invite);
+      const userNotificationsUpdatedArr = userNotifications;
+      userNotificationsUpdatedArr.push(invite);
 
       setUserNotifications(userNotificationsUpdatedArr);
     };

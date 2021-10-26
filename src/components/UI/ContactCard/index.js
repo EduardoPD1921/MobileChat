@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, TouchableOpacity } from 'react-native';
 
 import socket from '../../../socket';
 
@@ -8,39 +8,8 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { containerStyle, textStyle } from './styles';
 
-function ContactCard({ userName, userEmail, userId, isInviteSended, setSearchedUsers, searchedUsers }) {
+function ContactCard({ userName, userEmail, userId, isInviteSended }) {
   const { authUserInfo } = useContext(AuthContext);
-
-  // useEffect(() => {
-  //   console.log('test');
-
-  //   function contactInviteReceived(notification) {
-  //     console.log(notification, authUserInfo);
-  //   };
-
-  //   socket.on('contactInviteReceived', contactInviteReceived);
-
-  //   return () => {
-  //     socket.off('contactInviteReceived', contactInviteReceived);
-  //   };
-  // }, []);
-
-  // function addContact() {
-  //   api.put('/user/sendContactInvite', { receiverId: userId })
-  //     .then(resp => {
-  //       const updatedSearchedUsersArr = searchedUsers.map(user => {
-  //         if (user._id === userId) {
-  //           user.notifications.push(resp.data.notification);
-  //           return user;
-  //         }
-
-  //         return user;
-  //       });
-
-  //       setSearchedUsers(updatedSearchedUsersArr);
-  //     })
-  //     .catch(error => console.log(error.response.data));
-  // };
 
   function addContact() {
     socket.emit('sendContactInvite', authUserInfo, userId);
@@ -68,9 +37,9 @@ function ContactCard({ userName, userEmail, userId, isInviteSended, setSearchedU
   function renderAddContactButton() {
     if (isInviteSended) {
       return (
-        <Pressable style={[containerStyle.addContactButton, { backgroundColor: '#DC3545' }]} android_ripple={{ color: '#D4EDE1' }}>
-          <Text style={textStyle.whiteText}>Cancelar</Text>
-        </Pressable>
+        <TouchableOpacity style={{ marginRight: 20 }}>
+          <Text style={{ color: '#FF4848', fontFamily: 'Roboto-Regular' }}>Cancelar</Text>
+        </TouchableOpacity>
       );
     }
 

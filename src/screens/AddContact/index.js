@@ -14,8 +14,19 @@ function AddContact() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    function getSendedNotificationInvite(notification) {
-      console.log(notification);
+    function getSendedNotificationInvite(notification, receiverId) {
+      const updatedSearchedUsersArr = searchedUsers.map(user => {
+        if (user._id === receiverId) {
+          user.notifications.push(notification);
+          return user;
+        }
+
+        return user;
+      });
+
+      console.log(updatedSearchedUsersArr, searchedUsers);
+
+      setSearchedUsers(updatedSearchedUsersArr);
     };
 
     socket.on('getSendedNotificationInvite', getSendedNotificationInvite);
@@ -23,7 +34,7 @@ function AddContact() {
     return () => {
       socket.off('getSendedNotificationInvite', getSendedNotificationInvite);
     };
-  }, []);
+  });
 
   function renderFlastList() {
     if (isLoading) {

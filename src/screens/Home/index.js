@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../../contexts/AuthContext';
+import React, { useState, useContext } from 'react';
 import { NotificationContext } from '../../contexts/NotificationContext';
 import { View, Text, StatusBar, Button } from 'react-native';
-
-import socket from '../../socket';
 
 import Header from '../../components/UI/Header';
 import OptionsButton from '../../components/UI/Animated/OptionsButton';
@@ -13,23 +10,8 @@ import { containerStyle } from './styles';
 
 function Home({ navigation }) {
   const { userNotifications } = useContext(NotificationContext);
-  const { authUserInfo } = useContext(AuthContext);
 
   const [isTabOpen, setIsTabOpen] = useState(false);
-  // const [userNotifications, setUserNotifications] = useState();
-
-  // useEffect(() => {
-  //   function getUserNotifications(notifications) {
-  //     setUserNotifications(notifications);
-  //   };
-
-  //   socket.on('getUserNotifications', getUserNotifications);
-  //   socket.emit('userConnected', authUserInfo);
-
-  //   return () => {
-  //     socket.off('getUserNotifications', getUserNotifications);
-  //   };
-  // }, []);
 
   return (
     <View style={containerStyle.mainContainer}>
