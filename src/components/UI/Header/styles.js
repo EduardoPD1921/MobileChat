@@ -18,6 +18,14 @@ export const containerStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center'
+  },
+  notificationIndicator: {
+    position: 'absolute',
+    width: 6,
+    height: 6,
+    borderRadius: 12,
+    backgroundColor: '#FAAD14',
+    right: 2
   }
 });
 

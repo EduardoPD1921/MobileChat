@@ -25,7 +25,7 @@ function Home({ navigation }) {
     <View style={containerStyle.mainContainer}>
       <StatusBar backgroundColor="#52B788" />
       <OptionsButton navigation={navigation} />
-      <Header navigation={navigation} setIsTabOpen={setIsTabOpen} />
+      <Header notifications={authUserInfo} navigation={navigation} setIsTabOpen={setIsTabOpen} />
       <Text>Home</Text>
       <Button title="test" onPress={() => console.log(userNotifications)} />
       <NotificationsTab isTabOpen={isTabOpen} setIsTabOpen={setIsTabOpen} />

@@ -6,7 +6,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, iconStyle, textStyle } from './styles';
 
-function Header({ navigation, setIsTabOpen }) {
+function Header({ navigation, setIsTabOpen, notifications }) {
   return (
     <View style={containerStyle.mainContainer}>
       <View style={containerStyle.titleContainer}>
@@ -38,6 +38,7 @@ function Header({ navigation, setIsTabOpen }) {
             color="white"
             size={20} 
           />
+          {console.log(notifications)}
         </Pressable>
       </View>
     </View>
