@@ -24,8 +24,6 @@ function AddContact() {
         return user;
       });
 
-      console.log(updatedSearchedUsersArr, searchedUsers);
-
       setSearchedUsers(updatedSearchedUsersArr);
     };
 

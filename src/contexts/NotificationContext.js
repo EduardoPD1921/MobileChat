@@ -1,16 +1,13 @@
-import React, { useEffect, useState, createContext, useContext } from 'react';
-import { AuthContext } from './AuthContext';
+import React, { useEffect, useState, createContext } from 'react';
 
 import socket from '../socket';
 
 const NotificationContext = createContext();
 
 function NotificationProvider({ children }) {
-  const { isLoading, authUserInfo } = useContext(AuthContext);
-
   const [userNotifications, setUserNotifications] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => { 
     function getUserNotifications(user) {
       setUserNotifications(user.notifications);
     };
@@ -22,17 +19,20 @@ function NotificationProvider({ children }) {
       setUserNotifications(userNotificationsUpdatedArr);
     };
 
-    if (!isLoading) {
-      socket.on('getUserNotifications', getUserNotifications);
-      socket.on('contactInviteReceived', contactInviteReceived);
-      socket.emit('userConnected', authUserInfo);
-    }
+    function contactInviteCanceled(notificationsUpdated) {
+      console.log(notificationsUpdated.notifications);
+    };
+    
+    socket.on('getUserNotifications', getUserNotifications);
+    socket.on('contactInviteReceived', contactInviteReceived);
+    socket.on('contactInviteCanceled', contactInviteCanceled);
 
     return () => {
       socket.off('getUserNotifications', getUserNotifications);
       socket.off('contactInviteReceived', contactInviteReceived);
+      socket.off('contactInviteCanceled', contactInviteCanceled);
     };
-  }, [isLoading]);
+  });
 
   return (
     <NotificationContext.Provider value={{ userNotifications }}>

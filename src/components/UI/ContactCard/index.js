@@ -15,6 +15,10 @@ function ContactCard({ userName, userEmail, userId, isInviteSended }) {
     socket.emit('sendContactInvite', authUserInfo, userId);
   };
 
+  function cancelAddContactInvite() {
+    socket.emit('cancelContactInvite', authUserInfo, userId);
+  };
+
   // function cancelContactInvite() {
   //   api.put('/user/cancelContactInvite', { receiverId: userId })
   //     .then(resp => {
@@ -37,7 +41,7 @@ function ContactCard({ userName, userEmail, userId, isInviteSended }) {
   function renderAddContactButton() {
     if (isInviteSended) {
       return (
-        <TouchableOpacity style={{ marginRight: 20 }}>
+        <TouchableOpacity onPress={cancelAddContactInvite} style={{ marginRight: 20 }}>
           <Text style={{ color: '#FF4848', fontFamily: 'Roboto-Regular' }}>Cancelar</Text>
         </TouchableOpacity>
       );
