@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
+import { NotificationContext } from '../../../../contexts/NotificationContext';
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
@@ -14,6 +15,8 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { containerStyle, textStyle } from './styles';
 
 function NotificationsTab({ isTabOpen, setIsTabOpen }) {
+  const { userNotifications } = useContext(NotificationContext);
+
   const translateY = useSharedValue(-400);
   const modalBackgroundOpacity = useSharedValue(0);
   const modalBackgroundZIndex = useSharedValue(-1);
@@ -101,6 +104,13 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
           <View>
             <Text style={textStyle.notificationTitle}>Notificações</Text>
           </View>
+
+          <FlatList
+            data={userNotifications}
+            renderItem={function({ item }) {
+              return <Text>{item.senderName}</Text>
+            }}
+          />
         </Animated.View>
       </PanGestureHandler>
       {isTabOpen ? openNotificationTab() : null}

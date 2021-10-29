@@ -8,7 +8,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { containerStyle, textStyle } from './styles';
 
-function ContactCard({ userName, userEmail, userId, isInviteSended }) {
+function ContactCard({ userName, userEmail, userId, isInviteSended, searchedUsers, setSearchedUsers }) {
   const { authUserInfo } = useContext(AuthContext);
 
   function addContact() {
@@ -17,26 +17,20 @@ function ContactCard({ userName, userEmail, userId, isInviteSended }) {
 
   function cancelAddContactInvite() {
     socket.emit('cancelContactInvite', authUserInfo, userId);
+
+    const updatedSearchedUsersArr = searchedUsers.map(user => {
+      if (user._id === userId) {
+        const updatedNotifications = user.notifications.filter(notification => notification.senderId !== authUserInfo.id);
+        user.notifications = updatedNotifications;
+
+        return user;
+      }
+
+      return user;
+    });
+
+    setSearchedUsers(updatedSearchedUsersArr);
   };
-
-  // function cancelContactInvite() {
-  //   api.put('/user/cancelContactInvite', { receiverId: userId })
-  //     .then(resp => {
-  //       const updatedSearchedUsersArr = searchedUsers.map(user => {
-  //         if (user._id === userId) {
-  //           const updatedNotifications = user.notifications.filter(notification => notification.senderId !== authUserInfo.id);
-  //           user.notifications = updatedNotifications;
-
-  //           return user;
-  //         }
-
-  //         return user;
-  //       });
-
-  //       setSearchedUsers(updatedSearchedUsersArr);
-  //     })
-  //     .catch(error => console.log(error.response.data));
-  // };
 
   function renderAddContactButton() {
     if (isInviteSended) {

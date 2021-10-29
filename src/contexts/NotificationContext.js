@@ -20,7 +20,7 @@ function NotificationProvider({ children }) {
     };
 
     function contactInviteCanceled(notificationsUpdated) {
-      console.log(notificationsUpdated.notifications);
+      setUserNotifications(notificationsUpdated.notifications);
     };
     
     socket.on('getUserNotifications', getUserNotifications);
