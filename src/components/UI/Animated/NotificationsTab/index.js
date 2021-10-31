@@ -12,6 +12,8 @@ import { TouchableWithoutFeedback, BackHandler, View, StatusBar, Text, FlatList 
 import { useFocusEffect } from '@react-navigation/native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
+import NotificationCard from '../../NotificationCard';
+
 import { containerStyle, textStyle } from './styles';
 
 function NotificationsTab({ isTabOpen, setIsTabOpen }) {
@@ -108,7 +110,19 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
           <FlatList
             data={userNotifications}
             renderItem={function({ item }) {
-              return <Text>{item.senderName}</Text>
+              // const date1 = new Date();
+              // const date2 = new Date(item.date);
+
+              // const t1 = date1.getTime();
+              // const t2 = date2.getTime();
+
+              // console.log(parseInt((t1 - t2) / 60000));
+              return (
+                <NotificationCard
+                  senderName={item.senderName}
+                  date={item.date} 
+                />
+              );
             }}
           />
         </Animated.View>
