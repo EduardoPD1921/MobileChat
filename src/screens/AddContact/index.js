@@ -14,10 +14,10 @@ function AddContact() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    function getSendedNotificationInvite(notification, receiverId) {
+    function getSendedNotificationInvite(query, receiverId) {
       const updatedSearchedUsersArr = searchedUsers.map(user => {
         if (user._id === receiverId) {
-          user.notifications.push(notification);
+          user.notifications.push(query.notifications[query.notifications.length - 1]);
           return user;
         }
 

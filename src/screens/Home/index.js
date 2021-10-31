@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { NotificationContext } from '../../contexts/NotificationContext';
 import { AuthContext } from '../../contexts/AuthContext';
 import { View, Text, StatusBar, Button } from 'react-native';
 
@@ -12,7 +11,6 @@ import NotificationsTab from '../../components/UI/Animated/NotificationsTab';
 import { containerStyle } from './styles';
 
 function Home({ navigation }) {
-  const { userNotifications } = useContext(NotificationContext);
   const { authUserInfo } = useContext(AuthContext);
 
   const [isTabOpen, setIsTabOpen] = useState(false);
@@ -27,7 +25,7 @@ function Home({ navigation }) {
       <OptionsButton navigation={navigation} />
       <Header notifications={authUserInfo} navigation={navigation} setIsTabOpen={setIsTabOpen} />
       <Text>Home</Text>
-      <Button title="test" onPress={() => console.log(userNotifications)} />
+      {/* <Button title="test" onPress={() => console.log(userNotifications)} /> */}
       <NotificationsTab isTabOpen={isTabOpen} setIsTabOpen={setIsTabOpen} />
     </View>
   );

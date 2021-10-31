@@ -12,11 +12,8 @@ function NotificationProvider({ children }) {
       setUserNotifications(user.notifications);
     };
 
-    function contactInviteReceived(invite) {
-      const userNotificationsUpdatedArr = userNotifications;
-      userNotificationsUpdatedArr.push(invite);
-
-      setUserNotifications(userNotificationsUpdatedArr);
+    function contactInviteReceived(userNotifications) {
+      setUserNotifications(userNotifications.notifications);
     };
 
     function contactInviteCanceled(notificationsUpdated) {
