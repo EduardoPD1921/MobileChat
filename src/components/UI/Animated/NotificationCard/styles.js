@@ -5,7 +5,8 @@ export const containerStyle = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 10,
     alignItems: 'center',
-    marginBottom: 15
+    marginBottom: 15,
+    backgroundColor: 'white',
   },
   profileImageContainer: {
     flex: 1
@@ -14,6 +15,13 @@ export const containerStyle = StyleSheet.create({
     flex: 6,
     flexDirection: 'row',
     flexWrap: 'wrap'
+  },
+  notificationOptions: {
+    position: 'absolute',
+    backgroundColor: 'blue',
+    width: '100%',
+    height: 20,
+    left: 10
   }
 });
 
