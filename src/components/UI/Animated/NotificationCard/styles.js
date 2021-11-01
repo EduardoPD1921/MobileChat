@@ -17,11 +17,29 @@ export const containerStyle = StyleSheet.create({
     flexWrap: 'wrap'
   },
   notificationOptions: {
+    flexDirection: 'row',
     position: 'absolute',
-    backgroundColor: 'blue',
     width: '100%',
-    height: 20,
-    left: 10
+    left: 10,
+    justifyContent: 'center'
+  },
+  acceptButton: {
+    backgroundColor: '#52B788',
+    height: 30,
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: 15
+  },
+  rejectButton: {
+    backgroundColor: '#F34642',
+    height: 30,
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginLeft: 15
   }
 });
 

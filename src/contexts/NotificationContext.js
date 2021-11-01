@@ -32,7 +32,7 @@ function NotificationProvider({ children }) {
   });
 
   return (
-    <NotificationContext.Provider value={{ userNotifications }}>
+    <NotificationContext.Provider value={{ userNotifications, setUserNotifications }}>
       {children}
     </NotificationContext.Provider>
   );

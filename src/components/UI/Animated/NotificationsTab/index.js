@@ -113,6 +113,9 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
               return (
                 <NotificationCard
                   senderName={item.senderName}
+                  senderId={item.senderId}
+                  senderEmail={item.senderEmail}
+                  senderPhone={item.senderPhone}
                   date={item.date} 
                 />
               );

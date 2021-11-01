@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withTiming,
-  withSpring
+  withTiming
 } from 'react-native-reanimated';
+import { NotificationContext } from '../../../../contexts/NotificationContext';
+
+import api from '../../../../api';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -13,12 +15,27 @@ import userDefaultImage from '../../../../assets/images/userNotImage.png';
 
 import { containerStyle, imageStyle, textStyle } from './styles';
 
-function NotificationCard({ senderName, date }) {
+function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date }) {
+  const { setUserNotifications } = useContext(NotificationContext);
+
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const topAnimation = useSharedValue(0);
   const marginAnimation = useSharedValue(0);
   const arrowAnimation = useSharedValue(0);
+
+  function acceptContactInvite() {
+    const contactInfo = {
+      id: senderId,
+      name: senderName,
+      email: senderEmail,
+      phone: senderPhone
+    };
+
+    api.put('/user/acceptContactInvite', { contactInfo })
+      .then(resp => setUserNotifications(resp.data.notifications))
+      .catch(error => console.log(error.response.data));
+  };
 
   function renderDateDifference() {
     const currentDate = new Date();
@@ -43,7 +60,7 @@ function NotificationCard({ senderName, date }) {
 
   function openOptions() {
     arrowAnimation.value = withTiming(180, { duration: 200 });
-    marginAnimation.value = withTiming(60, { duration: 200 });
+    marginAnimation.value = withTiming(50, { duration: 200 });
     topAnimation.value = withTiming(60, { duration: 200 });
   };
 
@@ -80,7 +97,12 @@ function NotificationCard({ senderName, date }) {
   return (
     <>
       <Animated.View style={[containerStyle.notificationOptions, topAnimationStyle]}>
-        <Text style={{ color: 'white' }}>Teste</Text>
+        <TouchableOpacity onPress={acceptContactInvite} activeOpacity={0.7} style={containerStyle.acceptButton}>
+          <Text style={{ color: 'white' }}>Aceitar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} style={containerStyle.rejectButton}>
+          <Text style={{ color: 'white' }}>Cancelar</Text>
+        </TouchableOpacity>
       </Animated.View>
       <Animated.View style={[containerStyle.cardContainer, marginAnimationStyle]}>
         <View style={containerStyle.profileImageContainer}>
