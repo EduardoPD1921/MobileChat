@@ -8,7 +8,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { containerStyle, textStyle } from './styles';
 
-function ContactCard({ userName, userEmail, userId, isInviteSended, searchedUsers, setSearchedUsers }) {
+function ContactCard({ userName, userEmail, userId, isInviteSended, isAlreadyContact, searchedUsers, setSearchedUsers }) {
   const { authUserInfo } = useContext(AuthContext);
 
   function addContact() {
@@ -33,6 +33,10 @@ function ContactCard({ userName, userEmail, userId, isInviteSended, searchedUser
   };
 
   function renderAddContactButton() {
+    if (isAlreadyContact) {
+      return <Text style={{ marginRight: 10 }}>Adicionado</Text>
+    }
+
     if (isInviteSended) {
       return (
         <TouchableOpacity onPress={cancelAddContactInvite} style={{ marginRight: 20 }}>

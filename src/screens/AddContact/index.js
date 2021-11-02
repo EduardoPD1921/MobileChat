@@ -3,6 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 
 import socket from '../../socket';
+import api from '../../api';
 
 import AnimatedHeader from '../../components/UI/Animated/AnimatedHeader';
 import ContactCard from '../../components/UI/ContactCard';
@@ -11,8 +12,10 @@ function AddContact() {
   const { authUserInfo } = useContext(AuthContext);
 
   const [searchedUsers, setSearchedUsers] = useState([]);
+  const [authUserContacts, setAuthUserContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // useEffect for sockets exclusively
   useEffect(() => {
     function getSendedNotificationInvite(query, receiverId) {
       const updatedSearchedUsersArr = searchedUsers.map(user => {
@@ -34,6 +37,13 @@ function AddContact() {
     };
   });
 
+  // useEffect for api request
+  useEffect(() => {
+    api.get('/user/getUserContacts')
+      .then(resp => setAuthUserContacts(resp.data.contacts))
+      .catch(error => console.log(error.response.data));
+  }, []);
+
   function renderFlastList() {
     if (isLoading) {
       return <ActivityIndicator size="large" color="#bee4d2" />
@@ -46,13 +56,15 @@ function AddContact() {
         renderItem={function({ item }) {
           if (authUserInfo.id !== item._id) {
             const isInviteSended = item.notifications.find(notification => notification.senderId === authUserInfo.id);
+            const isAlreadyContact = authUserContacts.find(contact => contact._id === item._id);
 
             return (
               <ContactCard
                 userId={item._id}
                 userName={item.name}
                 userEmail={item.email}
-                isInviteSended={!!isInviteSended} 
+                isInviteSended={!!isInviteSended}
+                isAlreadyContact={!!isAlreadyContact}
                 setSearchedUsers={setSearchedUsers}
                 searchedUsers={searchedUsers}
               />

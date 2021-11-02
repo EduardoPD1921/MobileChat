@@ -19,20 +19,26 @@ function NotificationProvider({ children }) {
     function contactInviteCanceled(notificationsUpdated) {
       setUserNotifications(notificationsUpdated.notifications);
     };
+
+    function getUpdatedNotificationList(notificationList) {
+      setUserNotifications(notificationList.notifications);
+    };
     
     socket.on('getUserNotifications', getUserNotifications);
     socket.on('contactInviteReceived', contactInviteReceived);
     socket.on('contactInviteCanceled', contactInviteCanceled);
+    socket.on('getUpdatedNotificationList', getUpdatedNotificationList);
 
     return () => {
       socket.off('getUserNotifications', getUserNotifications);
       socket.off('contactInviteReceived', contactInviteReceived);
       socket.off('contactInviteCanceled', contactInviteCanceled);
+      socket.off('getUpdatedNotificationList', getUpdatedNotificationList);
     };
   });
 
   return (
-    <NotificationContext.Provider value={{ userNotifications, setUserNotifications }}>
+    <NotificationContext.Provider value={{ userNotifications }}>
       {children}
     </NotificationContext.Provider>
   );

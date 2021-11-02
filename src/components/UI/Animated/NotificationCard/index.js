@@ -5,9 +5,9 @@ import Animated, {
   useAnimatedStyle,
   withTiming
 } from 'react-native-reanimated';
-import { NotificationContext } from '../../../../contexts/NotificationContext';
+import { AuthContext } from '../../../../contexts/AuthContext';
 
-import api from '../../../../api';
+import socket from '../../../../socket';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -16,7 +16,7 @@ import userDefaultImage from '../../../../assets/images/userNotImage.png';
 import { containerStyle, imageStyle, textStyle } from './styles';
 
 function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date }) {
-  const { setUserNotifications } = useContext(NotificationContext);
+  const { authUserInfo } = useContext(AuthContext);
 
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
@@ -30,11 +30,9 @@ function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date
       name: senderName,
       email: senderEmail,
       phone: senderPhone
-    };
+    }
 
-    api.put('/user/acceptContactInvite', { contactInfo })
-      .then(resp => setUserNotifications(resp.data.notifications))
-      .catch(error => console.log(error.response.data));
+    socket.emit('acceptContactInvite', authUserInfo, contactInfo);
   };
 
   function renderDateDifference() {
