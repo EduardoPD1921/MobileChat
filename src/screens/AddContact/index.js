@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { View, FlatList, ActivityIndicator } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import socket from '../../socket';
 import api from '../../api';
@@ -14,6 +15,8 @@ function AddContact() {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [authUserContacts, setAuthUserContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isFocused = useIsFocused();
 
   // useEffect for sockets exclusively
   useEffect(() => {
@@ -30,19 +33,27 @@ function AddContact() {
       setSearchedUsers(updatedSearchedUsersArr);
     };
 
+    function getUpdatedContacts(updatedContacts) {
+      setAuthUserContacts(updatedContacts.contacts);
+    };
+
+    socket.on('getUpdatedContacts', getUpdatedContacts);
     socket.on('getSendedNotificationInvite', getSendedNotificationInvite);
 
     return () => {
       socket.off('getSendedNotificationInvite', getSendedNotificationInvite);
+      socket.off('getUpdatedContacts', getUpdatedContacts);
     };
   });
 
   // useEffect for api request
   useEffect(() => {
-    api.get('/user/getUserContacts')
-      .then(resp => setAuthUserContacts(resp.data.contacts))
-      .catch(error => console.log(error.response.data));
-  }, []);
+    if (isFocused) {
+      api.get('/user/getUserContacts')
+        .then(resp => setAuthUserContacts(resp.data.contacts))
+        .catch(error => console.log(error.response.data));
+    }
+  }, [isFocused]);
 
   function renderFlastList() {
     if (isLoading) {
