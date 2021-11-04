@@ -16,6 +16,7 @@ function Home({ navigation }) {
   const [isTabOpen, setIsTabOpen] = useState(false);
 
   useEffect(() => {
+    socket.connect();
     socket.emit('userConnected', authUserInfo);
   }, []);
 

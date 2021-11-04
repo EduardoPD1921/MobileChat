@@ -1,6 +1,7 @@
 import React, { useEffect, createContext, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import socket from '../socket';
 import api from '../api';
 
 const AuthContext = createContext();
@@ -46,6 +47,8 @@ function AuthProvider({ children }) {
 
   async function handleLogout() {
     try {
+      socket.disconnect();
+
       await AsyncStorage.removeItem('authToken');
       await AsyncStorage.removeItem('userInfo');
 
