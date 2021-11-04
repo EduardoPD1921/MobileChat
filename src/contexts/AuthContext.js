@@ -13,6 +13,7 @@ function AuthProvider({ children }) {
   useEffect(async () => {
     try {
       const authToken = await AsyncStorage.getItem('authToken');
+      console.log(authToken);
 
       if (authToken) {
         api.defaults.headers.Authorization = `${JSON.parse(authToken)}`;

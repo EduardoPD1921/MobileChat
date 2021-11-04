@@ -1,5 +1,5 @@
-import React, { useCallback, useContext } from 'react';
-import { NotificationContext } from '../../../../contexts/NotificationContext';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../../contexts/AuthContext';
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
@@ -8,20 +8,43 @@ import Animated, {
   runOnJS,
   withDelay
 } from 'react-native-reanimated';
-import { TouchableWithoutFeedback, BackHandler, View, StatusBar, Text, FlatList } from 'react-native';
+import { TouchableWithoutFeedback, BackHandler, View, StatusBar, Text, ScrollView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
+
+import api from '../../../../api';
+import socket from '../../../../socket';
 
 import NotificationCard from '../NotificationCard';
 
 import { containerStyle, textStyle } from './styles';
 
 function NotificationsTab({ isTabOpen, setIsTabOpen }) {
-  const { userNotifications } = useContext(NotificationContext);
+  const { authUserInfo } = useContext(AuthContext);
+
+  const [userNotifications, setUserNotifications] = useState([]);
 
   const translateY = useSharedValue(-400);
   const modalBackgroundOpacity = useSharedValue(0);
   const modalBackgroundZIndex = useSharedValue(-1);
+
+  useEffect(() => {
+    function getUpdatedNotificationList(userInfoUpdated) {
+      setUserNotifications(userInfoUpdated.notifications);
+    };
+
+    socket.on('getUpdatedNotificationList', getUpdatedNotificationList);
+
+    return () => {
+      socket.off('getUpdatedNotificationList', getUpdatedNotificationList);
+    };
+  });
+
+  useEffect(() => {
+    api.get(`/user/getUserNotifications/${authUserInfo.id}`)
+      .then(resp => setUserNotifications(resp.data.notifications))
+      .catch(error => console.log(error.response.data));
+  }, [isTabOpen]);
 
   useFocusEffect(
     useCallback(() => {
@@ -107,20 +130,22 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
             <Text style={textStyle.notificationTitle}>Notificações</Text>
           </View>
 
-          <FlatList
-            data={userNotifications}
-            renderItem={function({ item }) {
+          <ScrollView>
+            {userNotifications.map(notification => {
               return (
-                <NotificationCard
-                  senderName={item.senderName}
-                  senderId={item.senderId}
-                  senderEmail={item.senderEmail}
-                  senderPhone={item.senderPhone}
-                  date={item.date} 
-                />
+                <View key={notification.senderId}>
+                  <NotificationCard
+                    key={notification.senderId}
+                    senderName={notification.senderName}
+                    senderId={notification.senderId}
+                    senderEmail={notification.senderEmail}
+                    senderPhone={notification.senderPhone} 
+                    date={notification.date}
+                  />
+                </View>
               );
-            }}
-          />
+            })}
+          </ScrollView>
         </Animated.View>
       </PanGestureHandler>
       {isTabOpen ? openNotificationTab() : null}
