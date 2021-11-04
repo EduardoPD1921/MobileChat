@@ -16,13 +16,14 @@ import api from '../../../../api';
 import socket from '../../../../socket';
 
 import NotificationCard from '../NotificationCard';
+import NotificationAdvice from '../../NotificationAdvice';
 
 import { containerStyle, textStyle } from './styles';
 
 function NotificationsTab({ isTabOpen, setIsTabOpen }) {
   const { authUserInfo } = useContext(AuthContext);
 
-  const [userNotifications, setUserNotifications] = useState([]);
+  const [localNotifications, setLocalNotifications] = useState([]);
 
   const translateY = useSharedValue(-400);
   const modalBackgroundOpacity = useSharedValue(0);
@@ -30,7 +31,7 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
 
   useEffect(() => {
     function getUpdatedNotificationList(userInfoUpdated) {
-      setUserNotifications(userInfoUpdated.notifications);
+      setLocalNotifications(userInfoUpdated.notifications);
     };
 
     socket.on('getUpdatedNotificationList', getUpdatedNotificationList);
@@ -42,7 +43,7 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
 
   useEffect(() => {
     api.get(`/user/getUserNotifications/${authUserInfo.id}`)
-      .then(resp => setUserNotifications(resp.data.notifications))
+      .then(resp => setLocalNotifications(resp.data.notifications))
       .catch(error => console.log(error.response.data));
   }, [isTabOpen]);
 
@@ -96,6 +97,32 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
     setIsTabOpen(false);
   };
 
+  function renderNotifications() {
+    if (localNotifications.length > 0) {
+      return (
+        <ScrollView>
+          {localNotifications.map(notification => {
+            return (
+              <View style={{ marginBottom: 15 }} key={notification.senderId}>
+                <NotificationCard
+                  key={notification.senderId}
+                  senderName={notification.senderName}
+                  senderId={notification.senderId}
+                  senderEmail={notification.senderEmail}
+                  senderPhone={notification.senderPhone} 
+                  date={notification.date}
+                  setLocalNotifications={setLocalNotifications}
+                />
+              </View>
+            );
+          })}
+        </ScrollView>
+      );
+    }
+
+    return <NotificationAdvice />
+  };
+
   function statusBarColor() {
     if (isTabOpen) {
       return <StatusBar backgroundColor="#326e52" />
@@ -121,7 +148,7 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
       <TouchableWithoutFeedback onPress={() => closeNotificationTab()}>
         <Animated.View style={[containerStyle.modalBackground, modalBackgroundAnimation]} />
       </TouchableWithoutFeedback>
-      <PanGestureHandler onGestureEvent={panGestureEvent}>
+      <PanGestureHandler activeOffsetY={localNotifications.length > 0 ? [-20, 20] : []} onGestureEvent={panGestureEvent}>
         <Animated.View style={[containerStyle.notificationTabContainer, verticalGestureStyle]} >
           <View style={containerStyle.gestureIndicatorContainer}>
             <View style={containerStyle.gestureIndicator} />
@@ -130,10 +157,10 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
             <Text style={textStyle.notificationTitle}>Notificações</Text>
           </View>
 
-          <ScrollView>
-            {userNotifications.map(notification => {
+          {/* <ScrollView>
+            {localNotifications.map(notification => {
               return (
-                <View key={notification.senderId}>
+                <View style={{ marginBottom: 15 }} key={notification.senderId}>
                   <NotificationCard
                     key={notification.senderId}
                     senderName={notification.senderName}
@@ -141,11 +168,13 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
                     senderEmail={notification.senderEmail}
                     senderPhone={notification.senderPhone} 
                     date={notification.date}
+                    setLocalNotifications={setLocalNotifications}
                   />
                 </View>
               );
             })}
-          </ScrollView>
+          </ScrollView> */}
+          {renderNotifications()}
         </Animated.View>
       </PanGestureHandler>
       {isTabOpen ? openNotificationTab() : null}

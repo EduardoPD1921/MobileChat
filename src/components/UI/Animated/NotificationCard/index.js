@@ -6,8 +6,10 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 import { AuthContext } from '../../../../contexts/AuthContext';
+import { NotificationContext } from '../../../../contexts/NotificationContext';
 
 import socket from '../../../../socket';
+import api from '../../../../api';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -15,8 +17,9 @@ import userDefaultImage from '../../../../assets/images/userNotImage.png';
 
 import { containerStyle, imageStyle, textStyle } from './styles';
 
-function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date }) {
+function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date, setLocalNotifications }) {
   const { authUserInfo } = useContext(AuthContext);
+  const { setUserNotifications } = useContext(NotificationContext);
 
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
@@ -24,15 +27,24 @@ function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date
   const marginAnimation = useSharedValue(0);
   const arrowAnimation = useSharedValue(0);
 
-  function acceptContactInvite() {
-    const contactInfo = {
-      id: senderId,
-      name: senderName,
-      email: senderEmail,
-      phone: senderPhone
-    }
+  const userInfo = {
+    id: senderId,
+    name: senderName,
+    email: senderEmail,
+    phone: senderPhone
+  }
 
-    socket.emit('acceptContactInvite', authUserInfo, contactInfo);
+  function acceptContactInvite() {
+    socket.emit('acceptContactInvite', authUserInfo, userInfo);
+  };
+
+  function cancelContactInvite() {
+    api.put('/user/cancelInvite', { senderInfo: userInfo, receiverId: authUserInfo.id })
+      .then(resp => {
+        setLocalNotifications(resp.data.notifications);
+        setUserNotifications(resp.data.notifications);
+      })
+      .catch(error => console.log(error.response.data));
   };
 
   function renderDateDifference() {
@@ -98,7 +110,7 @@ function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date
         <TouchableOpacity onPress={acceptContactInvite} activeOpacity={0.7} style={containerStyle.acceptButton}>
           <Text style={{ color: 'white' }}>Aceitar</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.7} style={containerStyle.rejectButton}>
+        <TouchableOpacity onPress={cancelContactInvite} activeOpacity={0.7} style={containerStyle.rejectButton}>
           <Text style={{ color: 'white' }}>Cancelar</Text>
         </TouchableOpacity>
       </Animated.View>
