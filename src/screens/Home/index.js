@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { View, Text, StatusBar, Button } from 'react-native';
+import PushNotification from 'react-native-push-notification';
 
 import socket from '../../socket';
 
@@ -18,7 +19,20 @@ function Home({ navigation }) {
   useEffect(() => {
     socket.connect();
     socket.emit('userConnected', authUserInfo);
+
+    PushNotification.createChannel({
+      channelId: 'invite-channel',
+      channelName: 'Invite channel'
+    });
   }, []);
+
+  // function dispatchNotification() {
+  //   PushNotification.localNotification({
+  //     channelId: 'test-channel',
+  //     title: 'Test',
+  //     message: 'Test message',
+  //   });
+  // };
 
   return (
     <View style={containerStyle.mainContainer}>
@@ -26,7 +40,7 @@ function Home({ navigation }) {
       <OptionsButton navigation={navigation} />
       <Header notifications={authUserInfo} navigation={navigation} setIsTabOpen={setIsTabOpen} />
       <Text>Home</Text>
-      {/* <Button title="test" onPress={() => console.log(userNotifications)} /> */}
+      {/* <Button title="test" onPress={dispatchNotification} /> */}
       <NotificationsTab isTabOpen={isTabOpen} setIsTabOpen={setIsTabOpen} />
     </View>
   );

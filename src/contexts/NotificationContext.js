@@ -1,4 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react';
+import PushNotification from 'react-native-push-notification';
 
 import socket from '../socket';
 
@@ -12,8 +13,13 @@ function NotificationProvider({ children }) {
       setUserNotifications(user.notifications);
     };
 
-    function contactInviteReceived(userNotifications) {
+    function contactInviteReceived(userNotifications, sender) {
       setUserNotifications(userNotifications.notifications);
+      PushNotification.localNotification({
+        channelId: 'invite-channel',
+        title: 'Pedido de amizade',
+        message: `${sender.senderName} quer ser seu amigo`
+      });
     };
 
     function contactInviteCanceled(notificationsUpdated) {
