@@ -5,7 +5,7 @@ import PushNotification from 'react-native-push-notification';
 
 import socket from '../../socket';
 
-import Header from '../../components/UI/Header';
+import HomeHeader from '../../components/UI/HomeHeader';
 import OptionsButton from '../../components/UI/Animated/OptionsButton';
 import NotificationsTab from '../../components/UI/Animated/NotificationsTab';
 
@@ -38,7 +38,7 @@ function Home({ navigation }) {
     <View style={containerStyle.mainContainer}>
       <StatusBar backgroundColor="#52B788" />
       <OptionsButton navigation={navigation} />
-      <Header notifications={authUserInfo} navigation={navigation} setIsTabOpen={setIsTabOpen} />
+      <HomeHeader notifications={authUserInfo} navigation={navigation} setIsTabOpen={setIsTabOpen} />
       <Text>Home</Text>
       {/* <Button title="test" onPress={dispatchNotification} /> */}
       <NotificationsTab isTabOpen={isTabOpen} setIsTabOpen={setIsTabOpen} />

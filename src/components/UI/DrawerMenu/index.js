@@ -10,7 +10,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import { containerStyle, imageStyle, textStyle } from './styles';
 
-function DrawerMenu() {
+function DrawerMenu({ navigation }) {
   const { authUserInfo, handleLogout } = useContext(AuthContext);
 
   return (
@@ -28,6 +28,7 @@ function DrawerMenu() {
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <DrawerItem
+            onPress={() => navigation.navigate('Home')}
             label={props => {
               return (
                 <View style={containerStyle.drawerItem}>
@@ -54,6 +55,7 @@ function DrawerMenu() {
             }} 
           />
           <DrawerItem
+            onPress={() => navigation.navigate('Contacts')}
             label={props => {
               return (
                 <View style={containerStyle.drawerItem}>

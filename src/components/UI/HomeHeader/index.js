@@ -7,7 +7,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, iconStyle, textStyle } from './styles';
 
-function Header({ navigation, setIsTabOpen }) {
+function HomeHeader({ navigation, setIsTabOpen }) {
   const { userNotifications } = useContext(NotificationContext);
 
   function renderNotificationIndicator() {
@@ -54,4 +54,4 @@ function Header({ navigation, setIsTabOpen }) {
   );
 };
 
-export default Header;
+export default HomeHeader;

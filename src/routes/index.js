@@ -12,6 +12,7 @@ import SplashScreen from '../screens/SplashScreen';
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import Home from '../screens/Home';
+import Contacts from '../screens/Contacts';
 import AddContact from '../screens/AddContact';
 
 import DrawerMenu from '../components/UI/DrawerMenu';
@@ -25,6 +26,7 @@ function Routes() {
         drawerContent={props => <DrawerMenu {...props} />}
       >
         <Drawer.Screen options={{ headerShown: false }} name="Home" component={Home} />
+        <Drawer.Screen options={{ headerShown: false }} name="Contacts" component={Contacts} />
         <Drawer.Screen options={{ headerShown: false }} name="AddContact" component={AddContact} />
       </Drawer.Navigator>
     );
