@@ -17,4 +17,4 @@ The entire idea behind this project it's better understanding of the used techno
 
 ## Roadmap
 
-Check the roadmap on my [notion's page](https://wheat-titanium-222.notion.site/f2d1f5c1a1364067bc8c7393f50d203f?v=33efcdc44673458caa13686794218839)
+Check the roadmap on my [notion's page](https://wheat-titanium-222.notion.site/da0f3111f73449b38ac5bb2b99a9f49e?v=0567e8f918eb4ad29c866ffaf9ebcae3)
