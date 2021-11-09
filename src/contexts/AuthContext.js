@@ -14,7 +14,6 @@ function AuthProvider({ children }) {
   useEffect(async () => {
     try {
       const authToken = await AsyncStorage.getItem('authToken');
-      console.log(authToken);
 
       if (authToken) {
         api.defaults.headers.Authorization = `${JSON.parse(authToken)}`;
@@ -37,7 +36,7 @@ function AuthProvider({ children }) {
       await AsyncStorage.setItem('authToken', JSON.stringify(authToken));
       await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
   
-      api.defaults.Authorization = `${authToken}`;
+      api.defaults.headers.Authorization = `${authToken}`;
       setAuthUserInfo(userInfo);
       setAuthenticated(true);
     } catch (error) {
