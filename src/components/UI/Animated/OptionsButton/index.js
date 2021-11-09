@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Animated, Pressable } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -6,12 +6,12 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 
 import { containerStyle } from './styles';
 
-function OptionsButton({ navigation }) {
+function OptionsButton({ navigation, isOpenOptions, setIsOpenOptions }) {
   const [rotateAnimation] = useState(new Animated.Value(0));
   const [contactIconAnimation] = useState(new Animated.Value(0));
   const [groupIconXAnimation] = useState(new Animated.Value(0));
   const [groupIconYAnimation] = useState(new Animated.Value(0));
-  const [isOpenOptions, setIsOpenOptions] = useState(false);
+  // const [isOpenOptions, setIsOpenOptions] = useState(false);
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
