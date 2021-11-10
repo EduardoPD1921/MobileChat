@@ -17,7 +17,7 @@ import userDefaultImage from '../../../../assets/images/userNotImage.png';
 
 import { containerStyle, imageStyle, textStyle } from './styles';
 
-function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date, setLocalNotifications }) {
+function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date, handleSetLocalNotifications }) {
   const { authUserInfo } = useContext(AuthContext);
   const { setUserNotifications } = useContext(NotificationContext);
 
@@ -41,7 +41,7 @@ function NotificationCard({ senderName, senderId, senderEmail, senderPhone, date
   function cancelContactInvite() {
     api.put('/user/cancelInvite', { senderInfo: userInfo, receiverId: authUserInfo.id })
       .then(resp => {
-        setLocalNotifications(resp.data.notifications);
+        handleSetLocalNotifications(resp.data.notifications);
         setUserNotifications(resp.data.notifications);
       })
       .catch(error => console.log(error.response.data));

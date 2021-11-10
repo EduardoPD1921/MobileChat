@@ -11,7 +11,6 @@ function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
   const [contactIconAnimation] = useState(new Animated.Value(0));
   const [groupIconXAnimation] = useState(new Animated.Value(0));
   const [groupIconYAnimation] = useState(new Animated.Value(0));
-  // const [isOpenOptions, setIsOpenOptions] = useState(false);
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -64,10 +63,6 @@ function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
       })
     ]).start();
   };
-
-  // function toggleOptions() {
-  //   setIsOpenOptions(prevState => !prevState);
-  // };
 
   const interpolateRotating = rotateAnimation.interpolate({
     inputRange: [0, 1],

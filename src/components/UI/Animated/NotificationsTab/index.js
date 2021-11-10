@@ -20,7 +20,7 @@ import NotificationAdvice from '../../NotificationAdvice';
 
 import { containerStyle, textStyle } from './styles';
 
-function NotificationsTab({ isTabOpen, setIsTabOpen, closeTab, openTab }) {
+function NotificationsTab({ isTabOpen, closeTab, openTab }) {
   const { authUserInfo } = useContext(AuthContext);
 
   const [localNotifications, setLocalNotifications] = useState([]);
@@ -64,6 +64,10 @@ function NotificationsTab({ isTabOpen, setIsTabOpen, closeTab, openTab }) {
     }, [isTabOpen, closeNotificationTab])
   );
 
+  const handleSetLocalNotifications = useCallback((data) => {
+    setLocalNotifications(data);
+  }, []);
+
   const panGestureEvent = useAnimatedGestureHandler({
     onStart: (event) => {},
     onActive: (event) => {
@@ -76,14 +80,10 @@ function NotificationsTab({ isTabOpen, setIsTabOpen, closeTab, openTab }) {
         translateY.value = withTiming(-400, { duration: 200 });
         modalBackgroundOpacity.value = withDelay(200, withTiming(0, { duration: 100 }));
         modalBackgroundZIndex.value = withDelay(200, withTiming(-1, { duration: 200 }));
-        // runOnJS(setIsTabOpen)(false);
         runOnJS(closeTab)();
-        // closeTab();
       } else {
         translateY.value = withTiming(0, { duration: 250 });
-        // runOnJS(setIsTabOpen)(true);
-        // openTab();
-        runOnJS(closeTab)();
+        runOnJS(openTab)();
       }
     }
   });
@@ -98,7 +98,6 @@ function NotificationsTab({ isTabOpen, setIsTabOpen, closeTab, openTab }) {
     translateY.value = withTiming(-400, { duration: 200 });
     modalBackgroundOpacity.value = withDelay(200, withTiming(0, { duration: 200 }));
     modalBackgroundZIndex.value = withDelay(200, withTiming(-1, { duration: 200 }));
-    // setIsTabOpen(false);
     closeTab();
   };
 
@@ -116,7 +115,7 @@ function NotificationsTab({ isTabOpen, setIsTabOpen, closeTab, openTab }) {
                   senderEmail={notification.senderEmail}
                   senderPhone={notification.senderPhone} 
                   date={notification.date}
-                  setLocalNotifications={setLocalNotifications}
+                  handleSetLocalNotifications={handleSetLocalNotifications}
                 />
               </View>
             );

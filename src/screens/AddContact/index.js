@@ -64,6 +64,10 @@ function AddContact() {
     setIsLoading(false);
   }, []);
 
+  const handleSetSearchedUsers = useCallback((data) => {
+    setSearchedUsers(data);
+  }, []);
+
   function renderFlastList() {
     if (isLoading) {
       return <ActivityIndicator size="large" color="#bee4d2" />
@@ -85,8 +89,8 @@ function AddContact() {
                 userEmail={item.email}
                 isInviteSended={!!isInviteSended}
                 isAlreadyContact={!!isAlreadyContact}
-                setSearchedUsers={setSearchedUsers}
                 searchedUsers={searchedUsers}
+                handleSetSearchedUsers={handleSetSearchedUsers}
               />
             );
           }

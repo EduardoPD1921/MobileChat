@@ -8,7 +8,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { containerStyle, textStyle } from './styles';
 
-function ContactCard({ userName, userEmail, userId, isInviteSended, isAlreadyContact, searchedUsers, setSearchedUsers }) {
+function ContactCard({ userName, userEmail, userId, isInviteSended, isAlreadyContact, searchedUsers, handleSetSearchedUsers }) {
   const { authUserInfo } = useContext(AuthContext);
 
   function addContact() {
@@ -28,8 +28,8 @@ function ContactCard({ userName, userEmail, userId, isInviteSended, isAlreadyCon
 
       return user;
     });
-
-    setSearchedUsers(updatedSearchedUsersArr);
+    
+    handleSetSearchedUsers(updatedSearchedUsersArr);
   };
 
   function renderAddContactButton() {
