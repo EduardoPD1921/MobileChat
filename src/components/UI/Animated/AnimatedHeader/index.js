@@ -10,7 +10,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, inputStyle } from './styles';
 
-function AnimatedHeader({ setSearchedUsers, setIsLoading }) {
+function AnimatedHeader({ setSearchedUsers, isLoadingTrue, isLoadingFalse }) {
   const [headerOpeningAnimation] = useState(new Animated.Value(0));
   const [iconOpacity] = useState(new Animated.Value(0));
   const [searchInputWidth] = useState(new Animated.Value(1));
@@ -18,16 +18,16 @@ function AnimatedHeader({ setSearchedUsers, setIsLoading }) {
   const { handleChange, handleSubmit } = useFormik({
     initialValues: { search: '' },
     onSubmit: values => {
-      setIsLoading(true);
+      isLoadingTrue();
 
       api.get(`/user/searchUsers/${values.search}`)
         .then(resp => {
           setSearchedUsers(resp.data);
-          setIsLoading(false);
+          isLoadingFalse();
         })
         .catch(error => {
           console.log(error.response.data);
-          setIsLoading(false);
+          isLoadingFalse();
         });
     }
   });

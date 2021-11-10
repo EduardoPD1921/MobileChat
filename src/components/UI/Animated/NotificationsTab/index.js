@@ -20,7 +20,7 @@ import NotificationAdvice from '../../NotificationAdvice';
 
 import { containerStyle, textStyle } from './styles';
 
-function NotificationsTab({ isTabOpen, setIsTabOpen }) {
+function NotificationsTab({ isTabOpen, setIsTabOpen, closeTab, openTab }) {
   const { authUserInfo } = useContext(AuthContext);
 
   const [localNotifications, setLocalNotifications] = useState([]);
@@ -76,10 +76,14 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
         translateY.value = withTiming(-400, { duration: 200 });
         modalBackgroundOpacity.value = withDelay(200, withTiming(0, { duration: 100 }));
         modalBackgroundZIndex.value = withDelay(200, withTiming(-1, { duration: 200 }));
-        runOnJS(setIsTabOpen)(false);
+        // runOnJS(setIsTabOpen)(false);
+        runOnJS(closeTab)();
+        // closeTab();
       } else {
         translateY.value = withTiming(0, { duration: 250 });
-        runOnJS(setIsTabOpen)(true);
+        // runOnJS(setIsTabOpen)(true);
+        // openTab();
+        runOnJS(closeTab)();
       }
     }
   });
@@ -94,7 +98,8 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
     translateY.value = withTiming(-400, { duration: 200 });
     modalBackgroundOpacity.value = withDelay(200, withTiming(0, { duration: 200 }));
     modalBackgroundZIndex.value = withDelay(200, withTiming(-1, { duration: 200 }));
-    setIsTabOpen(false);
+    // setIsTabOpen(false);
+    closeTab();
   };
 
   function renderNotifications() {
@@ -156,24 +161,6 @@ function NotificationsTab({ isTabOpen, setIsTabOpen }) {
           <View>
             <Text style={textStyle.notificationTitle}>Notificações</Text>
           </View>
-
-          {/* <ScrollView>
-            {localNotifications.map(notification => {
-              return (
-                <View style={{ marginBottom: 15 }} key={notification.senderId}>
-                  <NotificationCard
-                    key={notification.senderId}
-                    senderName={notification.senderName}
-                    senderId={notification.senderId}
-                    senderEmail={notification.senderEmail}
-                    senderPhone={notification.senderPhone} 
-                    date={notification.date}
-                    setLocalNotifications={setLocalNotifications}
-                  />
-                </View>
-              );
-            })}
-          </ScrollView> */}
           {renderNotifications()}
         </Animated.View>
       </PanGestureHandler>

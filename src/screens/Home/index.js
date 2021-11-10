@@ -12,8 +12,6 @@ import NotificationsTab from '../../components/UI/Animated/NotificationsTab';
 
 import { containerStyle } from './styles';
 
-// const counter = new Set();
-
 function Home({ navigation }) {
   const { authUserInfo } = useContext(AuthContext);
 
@@ -38,6 +36,7 @@ function Home({ navigation }) {
     }, [])
   );
 
+  // useCallback for better optimization
   const toggleOptions = useCallback(() => {
     setIsOpenOptions(prevState => !prevState);
   }, []);
@@ -46,12 +45,9 @@ function Home({ navigation }) {
     setIsTabOpen(true)
   }, []);
 
-  // const closeTab = useCallback(() => {
-  //   setIsTabOpen(false);
-  // }, []);
-
-  // counter.add(toggleOptions);
-  // console.log(counter.size);
+  const closeTab = useCallback(() => {
+    setIsTabOpen(false);
+  }, []);
 
   return (
     <View style={containerStyle.mainContainer}>
@@ -60,7 +56,7 @@ function Home({ navigation }) {
       <HomeHeader notifications={authUserInfo} navigation={navigation} openTab={openTab} />
       <Text>Home</Text>
       {/* <Button title="test" onPress={dispatchNotification} /> */}
-      <NotificationsTab isTabOpen={isTabOpen} setIsTabOpen={setIsTabOpen} />
+      <NotificationsTab isTabOpen={isTabOpen} closeTab={closeTab} openTab={openTab} />
     </View>
   );
 };

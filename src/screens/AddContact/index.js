@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
@@ -55,6 +55,15 @@ function AddContact() {
     }
   }, [isFocused]);
 
+  // useCallback for better optimization
+  const isLoadingTrue = useCallback(() => {
+    setIsLoading(true);
+  }, []);
+
+  const isLoadingFalse = useCallback(() => {
+    setIsLoading(false);
+  }, []);
+
   function renderFlastList() {
     if (isLoading) {
       return <ActivityIndicator size="large" color="#bee4d2" />
@@ -90,7 +99,8 @@ function AddContact() {
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: '#68c097' }}>
       <AnimatedHeader
         setSearchedUsers={setSearchedUsers}
-        setIsLoading={setIsLoading}
+        isLoadingFalse={isLoadingFalse}
+        isLoadingTrue={isLoadingTrue}
       />
 
       {renderFlastList()}
