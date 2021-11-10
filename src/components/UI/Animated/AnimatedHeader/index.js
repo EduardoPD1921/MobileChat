@@ -10,7 +10,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, inputStyle } from './styles';
 
-function AnimatedHeader({ setSearchedUsers, isLoadingTrue, isLoadingFalse }) {
+function AnimatedHeader({ handleSetSearchedUsers, isLoadingTrue, isLoadingFalse }) {
   const [headerOpeningAnimation] = useState(new Animated.Value(0));
   const [iconOpacity] = useState(new Animated.Value(0));
   const [searchInputWidth] = useState(new Animated.Value(1));
@@ -22,7 +22,7 @@ function AnimatedHeader({ setSearchedUsers, isLoadingTrue, isLoadingFalse }) {
 
       api.get(`/user/searchUsers/${values.search}`)
         .then(resp => {
-          setSearchedUsers(resp.data);
+          handleSetSearchedUsers(resp.data);
           isLoadingFalse();
         })
         .catch(error => {

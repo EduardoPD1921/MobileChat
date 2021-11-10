@@ -102,7 +102,7 @@ function AddContact() {
   return (
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: '#68c097' }}>
       <AnimatedHeader
-        setSearchedUsers={setSearchedUsers}
+        handleSetSearchedUsers={handleSetSearchedUsers}
         isLoadingFalse={isLoadingFalse}
         isLoadingTrue={isLoadingTrue}
       />
