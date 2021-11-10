@@ -6,7 +6,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 
 import { containerStyle } from './styles';
 
-function OptionsButton({ navigation, isOpenOptions, setIsOpenOptions }) {
+function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
   const [rotateAnimation] = useState(new Animated.Value(0));
   const [contactIconAnimation] = useState(new Animated.Value(0));
   const [groupIconXAnimation] = useState(new Animated.Value(0));
@@ -65,9 +65,9 @@ function OptionsButton({ navigation, isOpenOptions, setIsOpenOptions }) {
     ]).start();
   };
 
-  function toggleOptions() {
-    setIsOpenOptions(prevState => !prevState);
-  };
+  // function toggleOptions() {
+  //   setIsOpenOptions(prevState => !prevState);
+  // };
 
   const interpolateRotating = rotateAnimation.interpolate({
     inputRange: [0, 1],

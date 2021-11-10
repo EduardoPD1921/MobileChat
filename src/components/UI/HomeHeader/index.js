@@ -7,7 +7,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, iconStyle, textStyle } from './styles';
 
-function HomeHeader({ navigation, setIsTabOpen }) {
+function HomeHeader({ navigation, openTab }) {
   const { userNotifications } = useContext(NotificationContext);
 
   function renderNotificationIndicator() {
@@ -40,7 +40,7 @@ function HomeHeader({ navigation, setIsTabOpen }) {
           color="white"
           size={20} 
         />
-        <Pressable style={{ marginRight: 15 }} onPress={() => setIsTabOpen(true)} android_ripple={{ color: '#D4EDE1', borderless: true }}>
+        <Pressable style={{ marginRight: 15 }} onPress={openTab} android_ripple={{ color: '#D4EDE1', borderless: true }}>
           {renderNotificationIndicator()}
           <IonIcon
             style={[iconStyle.search, { marginRight: 0 }]}
