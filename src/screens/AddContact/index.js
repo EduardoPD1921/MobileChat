@@ -7,7 +7,7 @@ import socket from '../../socket';
 import api from '../../api';
 
 import AnimatedHeader from '../../components/UI/Animated/AnimatedHeader';
-import ContactCard from '../../components/UI/ContactCard';
+import AddContactCard from '../../components/UI/AddContactCard';
 
 function AddContact() {
   const { authUserInfo } = useContext(AuthContext);
@@ -83,7 +83,7 @@ function AddContact() {
             const isAlreadyContact = authUserContacts.find(contact => contact._id === item._id);
 
             return (
-              <ContactCard
+              <AddContactCard
                 userId={item._id}
                 userName={item.name}
                 userEmail={item.email}
