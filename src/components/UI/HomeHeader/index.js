@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { NotificationContext } from '../../../contexts/NotificationContext';
 
-import FeatherIcon from 'react-native-vector-icons/Feather';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, iconStyle, textStyle } from './styles';
@@ -24,11 +23,11 @@ function HomeHeader({ navigation, openTab }) {
           onPress={() => navigation.openDrawer()} 
           android_ripple={{ color: '#D4EDE1', borderless: true }}
         >
-          <FeatherIcon
+          <IonIcon
             style={iconStyle.menu}
             color="white"
-            name="menu"
-            size={20} 
+            name="menu-sharp"
+            size={25} 
           />
         </Pressable>
         <Text style={textStyle.headerTitle}>Mobilechat</Text>

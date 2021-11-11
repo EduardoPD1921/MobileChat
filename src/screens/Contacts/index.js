@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import api from '../../api';
 
 import ContactsHeader from '../../components/UI/Animated/ContactsHeader';
-import ContactCard from '../../components/UI/ContactCard';
+import ContactCard from '../../components/UI/Animated/ContactCard';
 
 import { containerStyle } from './styles';
 
@@ -27,6 +27,10 @@ function Contacts({ navigation }) {
     setSelectedContact(data);
   }, []);
 
+  const clearSelectedContact = useCallback(() => {
+    setSelectedContact('');
+  }, []);
+
   function renderContacts() {
     return (
       <ScrollView>
@@ -37,6 +41,7 @@ function Contacts({ navigation }) {
               contactId={contact._id}
               contactName={contact.name}
               contactPhone={contact.phone}
+              selectedContact={selectedContact}
               setSelectedContact={handleLongPress} 
             />
           );
@@ -47,7 +52,7 @@ function Contacts({ navigation }) {
 
   return (
     <View style={containerStyle.mainScreenContainer}>
-      <ContactsHeader navigation={navigation} selectedContact={selectedContact} />
+      <ContactsHeader navigation={navigation} selectedContact={selectedContact} clearSelectedContact={clearSelectedContact} />
       {renderContacts()}
       <Text onPress={() => console.log(!!selectedContact)}>
         Teste

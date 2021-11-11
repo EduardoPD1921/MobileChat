@@ -1,28 +1,58 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Pressable } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withTiming,
+  withTiming
 } from 'react-native-reanimated';
 
-import FeatherIcon from 'react-native-vector-icons/Feather';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, textStyle, iconStyle } from './styles';
 
-function ContactsHeader({ navigation, selectedContact }) {
-  const opacityAnimation = useSharedValue(1);
+function ContactsHeader({ navigation, selectedContact, clearSelectedContact }) {
+  const menuOpacityAnimation = useSharedValue(1);
+  const closeOpacityAnimation = useSharedValue(0);
+  const closeZindexAnimation = useSharedValue(-10);
+  const headerTitleAnimation = useSharedValue(0);
+  const iconScaleAnimation = useSharedValue(0);
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-  function opacityFunction() {
-    opacityAnimation.value = withTiming(0, { duration: 500 });
+  function selectModeOn() {
+    menuOpacityAnimation.value = withTiming(0, { duration: 200 });
+    closeOpacityAnimation.value = withTiming(1, { duration: 200 });
+    closeZindexAnimation.value = withTiming(1, { duration: 200 });
+    headerTitleAnimation.value = withTiming(10, { duration: 150 });
+    iconScaleAnimation.value = withTiming(1, { duration: 250 });
+  };
+
+  function selectModeOff() {
+    menuOpacityAnimation.value = withTiming(1, { duration: 200 });
+    closeOpacityAnimation.value = withTiming(0, { duration: 200 });
+    closeZindexAnimation.value = withTiming(-10, { duration: 200 });
+    headerTitleAnimation.value = withTiming(0, { duration: 150 });
+    iconScaleAnimation.value = withTiming(0);
   };
 
   const opacityStyle = useAnimatedStyle(() => {
     return {
-      opacity: opacityAnimation.value
+      opacity: menuOpacityAnimation.value
+    }
+  });
+
+  const closeStyle = useAnimatedStyle(() => {
+    return {
+      opacity: closeOpacityAnimation.value,
+      zIndex: closeZindexAnimation.value,
+      transform: [{ scaleY: iconScaleAnimation.value }]
+    }
+  });
+
+  const headerStyle = useAnimatedStyle(() => {
+    return {
+      opacity: menuOpacityAnimation.value,
+      transform: [{ translateY: headerTitleAnimation.value }]
     }
   });
 
@@ -34,23 +64,50 @@ function ContactsHeader({ navigation, selectedContact }) {
           style={[iconStyle.menu, opacityStyle]}
           android_ripple={{ color: '#D4EDE1', borderless: true }}
         >
-          <FeatherIcon
+          <IonIcon
             color="white"
-            name="menu"
+            name="menu-sharp"
+            size={25} 
+          />
+        </AnimatedPressable>
+        <AnimatedPressable
+          onPress={clearSelectedContact}
+          style={[iconStyle.menu, closeStyle]}
+          android_ripple={{ color: '#D4EDE1', borderless: true }}
+        >
+          <IonIcon
+            color="white"
+            name="close-outline"
+            size={25} 
+          />
+        </AnimatedPressable>
+        <Animated.Text style={[textStyle.headerTitle, headerStyle]}>Contatos</Animated.Text>
+      </View>
+      <View style={containerStyle.otherOptionsContainer}>
+        <AnimatedPressable
+          onPress={() => console.log('test1')}
+          style={[iconStyle.search, opacityStyle]}
+          android_ripple={{ color: '#D4EDE1', borderless: true }}
+        >
+          <IonIcon
+            name="search"
+            color="white"
             size={20} 
           />
         </AnimatedPressable>
-        <Text style={textStyle.headerTitle}>Contatos</Text>
+        <AnimatedPressable
+          style={[iconStyle.search, closeStyle]}
+          onPress={() => console.log('test')}
+          android_ripple={{ color: '#D4EDE1', borderless: true }}
+        >
+          <IonIcon
+            name="trash-outline"
+            color="white"
+            size={20} 
+          />
+        </AnimatedPressable>
       </View>
-      <View style={containerStyle.otherOptionsContainer}>
-        <IonIcon
-          style={iconStyle.search}
-          name="search"
-          color="white"
-          size={20} 
-        />
-      </View>
-      {selectedContact ? opacityFunction() : null}
+      {selectedContact ? selectModeOn() : selectModeOff()}
     </View>
   );
 };

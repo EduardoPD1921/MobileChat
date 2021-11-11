@@ -35,6 +35,11 @@ export const iconStyle = StyleSheet.create({
   },
   search: {
     marginRight: 15
+  },
+  checkMark: {
+    position: 'absolute',
+    left: 30,
+    bottom: 5
   }
 });
 

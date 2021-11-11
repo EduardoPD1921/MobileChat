@@ -15,7 +15,8 @@ export const containerStyle = StyleSheet.create({
   },
   otherOptionsContainer: {
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    justifyContent: 'center'
   }
 });
 
@@ -24,18 +25,19 @@ export const textStyle = StyleSheet.create({
     color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
-    marginLeft: 55
+    marginLeft: 60
   }
 });
 
 export const iconStyle = StyleSheet.create({
   search: {
-    marginRight: 15
+    position: 'absolute',
+    right: 15,
   },
   menu: {
     position: 'absolute',
     marginLeft: 15,
     borderRadius: 30,
-    width: 20
+    width: 25
   }
 });
