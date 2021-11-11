@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -11,6 +11,7 @@ import { containerStyle } from './styles';
 
 function Contacts({ navigation }) {
   const [userContacts, setUserContacts] = useState([]);
+  const [selectedContact, setSelectedContact] = useState('');
 
   const isFocused = useIsFocused();
 
@@ -22,6 +23,10 @@ function Contacts({ navigation }) {
     }
   }, [isFocused]);
 
+  const handleLongPress = useCallback((data) => {
+    setSelectedContact(data);
+  }, []);
+
   function renderContacts() {
     return (
       <ScrollView>
@@ -29,8 +34,10 @@ function Contacts({ navigation }) {
           return (
             <ContactCard
               key={contact._id}
+              contactId={contact._id}
               contactName={contact.name}
-              contactPhone={contact.phone} 
+              contactPhone={contact.phone}
+              setSelectedContact={handleLongPress} 
             />
           );
         })}
@@ -40,8 +47,11 @@ function Contacts({ navigation }) {
 
   return (
     <View style={containerStyle.mainScreenContainer}>
-      <ContactsHeader navigation={navigation} />
+      <ContactsHeader navigation={navigation} selectedContact={selectedContact} />
       {renderContacts()}
+      <Text onPress={() => console.log(!!selectedContact)}>
+        Teste
+      </Text>
     </View>
   );
 };

@@ -5,9 +5,9 @@ import { componentStyles } from './styles';
 
 import userDefaultImage from '../../../assets/images/userDefaultImage.png';
 
-function ContactCard({ contactName, contactPhone }) {
+function ContactCard({ contactId, contactName, contactPhone, setSelectedContact }) {
   return (
-    <Pressable android_ripple={{ color: '#b4b4b4' }}>
+    <Pressable onLongPress={() => setSelectedContact(contactId)} android_ripple={{ color: '#b4b4b4' }}>
       <View style={componentStyles.cardContainer}>
         <View style={componentStyles.imageContainer}>
           <Image style={componentStyles.image} source={userDefaultImage} />

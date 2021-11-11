@@ -24,12 +24,18 @@ export const textStyle = StyleSheet.create({
     color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
-    marginLeft: 20
+    marginLeft: 55
   }
 });
 
 export const iconStyle = StyleSheet.create({
   search: {
     marginRight: 15
+  },
+  menu: {
+    position: 'absolute',
+    marginLeft: 15,
+    borderRadius: 30,
+    width: 20
   }
 });

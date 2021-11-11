@@ -1,18 +1,37 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, textStyle, iconStyle } from './styles';
 
-function ContactsHeader({ navigation }) {
+function ContactsHeader({ navigation, selectedContact }) {
+  const opacityAnimation = useSharedValue(1);
+
+  const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+  function opacityFunction() {
+    opacityAnimation.value = withTiming(0, { duration: 500 });
+  };
+
+  const opacityStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacityAnimation.value
+    }
+  });
+
   return (
     <View style={containerStyle.headerContainer}>
       <View style={containerStyle.titleContainer}>
-        <Pressable 
+        <AnimatedPressable 
           onPress={() => navigation.openDrawer()}
-          style={{ marginLeft: 15, borderRadius: 30, width: 20 }}
+          style={[iconStyle.menu, opacityStyle]}
           android_ripple={{ color: '#D4EDE1', borderless: true }}
         >
           <FeatherIcon
@@ -20,7 +39,7 @@ function ContactsHeader({ navigation }) {
             name="menu"
             size={20} 
           />
-        </Pressable>
+        </AnimatedPressable>
         <Text style={textStyle.headerTitle}>Contatos</Text>
       </View>
       <View style={containerStyle.otherOptionsContainer}>
@@ -31,6 +50,7 @@ function ContactsHeader({ navigation }) {
           size={20} 
         />
       </View>
+      {selectedContact ? opacityFunction() : null}
     </View>
   );
 };
