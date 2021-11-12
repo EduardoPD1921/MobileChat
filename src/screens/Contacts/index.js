@@ -41,6 +41,7 @@ function Contacts({ navigation }) {
               contactId={contact._id}
               contactName={contact.name}
               contactPhone={contact.phone}
+              contactEmail={contact.email}
               selectedContact={selectedContact}
               setSelectedContact={handleLongPress} 
             />

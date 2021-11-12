@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../../../contexts/AuthContext';
 import { View, Text, Image, Pressable } from 'react-native';
 import Animated, {
   withTiming,
   useSharedValue,
   useAnimatedStyle
 } from 'react-native-reanimated';
+
+import api from '../../../../api';
 
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
@@ -13,7 +16,9 @@ import { componentStyles } from './styles';
 import userDefaultImage from '../../../../assets/images/userDefaultImage.png';
 import { iconStyle } from '../../HomeHeader/styles';
 
-function ContactCard({ contactId, contactName, contactPhone, setSelectedContact, selectedContact }) {
+function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSelectedContact, selectedContact }) {
+  const { authUserInfo } = useContext(AuthContext);
+
   const iconScaleAnimation = useSharedValue(0);
 
   const AnimatedIcon = Animated.createAnimatedComponent(IonIcon);
@@ -32,8 +37,29 @@ function ContactCard({ contactId, contactName, contactPhone, setSelectedContact,
     }
   });
 
+  function createChat() {
+    const chatUsers = [
+      {
+        _id: authUserInfo.id,
+        name: authUserInfo.name,
+        email: authUserInfo.email,
+        phone: authUserInfo.phone
+      },
+      {
+        _id: contactId,
+        name: contactName,
+        email: contactEmail,
+        phone: contactPhone
+      }
+    ]
+
+    api.post('/chat/store', { chatUsers })
+      .then(resp => console.log(resp.data))
+      .catch(error => console.log(error.response.data));
+  };
+
   return (
-    <Pressable onLongPress={() => setSelectedContact(contactId)} android_ripple={{ color: '#b4b4b4' }}>
+    <Pressable onPress={() => createChat()} onLongPress={() => setSelectedContact(contactId)} android_ripple={{ color: '#b4b4b4' }}>
       <View style={[componentStyles.cardContainer, { backgroundColor: contactId === selectedContact ? '#eaeaea' : null }]}>
         <View style={componentStyles.imageContainer}>
           <Image style={componentStyles.image} source={userDefaultImage} />
