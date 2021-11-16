@@ -1,14 +1,16 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import { View, Text, StatusBar, Button } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { View, StatusBar, ScrollView } from 'react-native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import PushNotification from 'react-native-push-notification';
 
+import api from '../../api';
 import socket from '../../socket';
 
 import HomeHeader from '../../components/UI/HomeHeader';
 import OptionsButton from '../../components/UI/Animated/OptionsButton';
 import NotificationsTab from '../../components/UI/Animated/NotificationsTab';
+import ChatCard from '../../components/UI/Animated/ChatCard';
 
 import { containerStyle } from './styles';
 
@@ -17,6 +19,8 @@ function Home({ navigation }) {
 
   const [isTabOpen, setIsTabOpen] = useState(false);
   const [isOpenOptions, setIsOpenOptions] = useState(false);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     socket.connect();
@@ -27,6 +31,14 @@ function Home({ navigation }) {
       channelName: 'Invite channel'
     });
   }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      api.get('/chat/getUserChats')
+        .then(resp => console.log(resp.data))
+        .catch(error => console.log(error.response.data));
+    }
+  }, [isFocused]);
 
   useFocusEffect(
     useCallback(() => {
@@ -54,8 +66,7 @@ function Home({ navigation }) {
       <StatusBar backgroundColor="#52B788" />
       <OptionsButton navigation={navigation} isOpenOptions={isOpenOptions} toggleOptions={toggleOptions} />
       <HomeHeader notifications={authUserInfo} navigation={navigation} openTab={openTab} />
-      <Text>Home</Text>
-      {/* <Button title="test" onPress={dispatchNotification} /> */}
+      {/* <ChatCard /> */}
       <NotificationsTab isTabOpen={isTabOpen} closeTab={closeTab} openTab={openTab} />
     </View>
   );
