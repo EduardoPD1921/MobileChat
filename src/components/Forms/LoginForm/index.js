@@ -151,7 +151,7 @@ function LoginForm({ navigation }) {
         <View style={containerStyle.submitContainer}>
           {renderSubmitButton()}
           <Text style={textStyle.dividerText}>ou</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+          <TouchableOpacity>
             <Text style={textStyle.registerText}>Registre-se</Text>
           </TouchableOpacity>
         </View>

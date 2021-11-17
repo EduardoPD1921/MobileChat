@@ -10,7 +10,6 @@ const Drawer = createDrawerNavigator();
 
 import SplashScreen from '../screens/SplashScreen';
 import Login from '../screens/Login';
-import Signup from '../screens/Signup';
 import Home from '../screens/Home';
 import Contacts from '../screens/Contacts';
 import AddContact from '../screens/AddContact';
@@ -75,14 +74,6 @@ function Routes() {
           options={{
             headerTitle: 'Entrar' 
           }} 
-        />
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{
-            headerTitle: 'Cadastro',
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS 
-          }}
         />
       </Stack.Group>
     )
