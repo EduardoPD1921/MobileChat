@@ -10,6 +10,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 import LoginForm from '../../components/Forms/LoginForm';
 import Snackbar from '../../components/UI/Animated/Snackbar';
+import SignupTab from '../../components/UI/Animated/SignupTab';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -31,25 +32,28 @@ function Login({ navigation }) {
   }, [isFocused]);
 
   return (
-    <View style={containerStyle.mainContainer}>
-      <StatusBar
-        backgroundColor="#52B788"
-      />
-      <Snackbar
-        openSnack={openSnack}
-        setSnackbarStatus={setOpenSnack}
-      />
-      <KeyboardAvoidingView style={{ flex: 6, width: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
-        <View style={containerStyle.titleContainer}>
-          <Image
-            source={require('../../assets/images/loginIcon.png')} 
-          />
-          <Text style={textStyle.title}>MobileChat</Text>
-        </View>
-        <LoginForm navigation={navigation} />
-      </KeyboardAvoidingView>
-      <View style={{ flex: 1 }} />
-    </View>
+    <>
+      <View style={containerStyle.mainContainer}>
+        <StatusBar
+          backgroundColor="#52B788"
+        />
+        <Snackbar
+          openSnack={openSnack}
+          setSnackbarStatus={setOpenSnack}
+        />
+        <KeyboardAvoidingView style={{ flex: 6, width: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
+          <View style={containerStyle.titleContainer}>
+            <Image
+              source={require('../../assets/images/loginIcon.png')} 
+            />
+            <Text style={textStyle.title}>MobileChat</Text>
+          </View>
+          <LoginForm navigation={navigation} />
+        </KeyboardAvoidingView>
+        <View style={{ flex: 1 }} />
+      </View>
+      <SignupTab />
+    </>
   );
 };
 
