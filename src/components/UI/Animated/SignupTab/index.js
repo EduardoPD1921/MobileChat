@@ -6,6 +6,8 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 
+import SignupForm from '../../../Forms/SignupForm';
+
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { signupTabStyles } from './styles';
@@ -49,6 +51,11 @@ function SignupTab({ isTabOpen, toggleSignupTabOpen }) {
         <View style={signupTabStyles.closeButtonContainer}>
           <IonIcon onPress={toggleSignupTabOpen} color="black" name="close-outline" size={25} />
         </View>
+        <View style={signupTabStyles.tabTitleContainer}>
+          <Text style={signupTabStyles.tabTitle}>Cadastre-se</Text>
+          <Text style={signupTabStyles.tabDesc}>Insira suas informações para continuar</Text>
+        </View>
+        <SignupForm />
       </Animated.View>
       {isTabOpen ? openTab() : closeTab()}
     </>

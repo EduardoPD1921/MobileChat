@@ -1,152 +1,16 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableHighlight, Text, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { Text, View, ScrollView, TextInput } from 'react-native';
 
-import api from '../../../api';
+import { signupFormStyles } from './styles';
 
-import { useFormik } from 'formik';
-import SignupSchema from '../../../validations/SignupValidation';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import Icon from 'react-native-vector-icons/Feather';
-
-import ErrorText from './ErrorText';
-
-import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
-
-function SignupForm({ navigation }) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { handleChange, handleSubmit, values, errors, touched } = useFormik({
-    initialValues: { userName: '', userEmail: '', userPhone: '', userPassword: '' },
-    onSubmit: async values => {
-      setIsLoading(true);
-      const { userEmail, userName, userPhone, userPassword } = values;
-      try {
-        const requestResp = await api.post('/user/store', { userName, userEmail, userPhone, userPassword });
-        await AsyncStorage.setItem('snackbarOpen', 'true');
-        setIsLoading(false);
-        navigation.navigate('Login');
-      } catch(error) {
-        setIsLoading(false);
-        console.warn(error.response.data);
-      }
-    },
-    validationSchema: SignupSchema
-  });
-
-  function maskPhone(rawValue) {
-    return rawValue
-      .replace(/\D/g, "")
-      .replace(/^(\d{2})(\d)/g, "($1) $2")
-      .replace(/(\d)(\d{4})$/, "$1-$2");
-  };
-
-  function inputStyleHandler(touched, error) {
-    if (touched && error) {
-      return [inputStyle.defaultSignupInput, { borderBottomColor: 'red' }];
-    }
-
-    return inputStyle.defaultSignupInput;
-  };
-
-  function renderErrorText(touched, error) {
-    if (touched && error) {
-      return <ErrorText>{error}</ErrorText>
-    }
-  };
-
-  function renderSubmitButton() {
-    if (isLoading) {
-      return <ActivityIndicator style={{ marginTop: 100 }} size="large" color="#52B788" />
-    }
-
-    return (
-      <TouchableHighlight onPress={handleSubmit} underlayColor="#40916C" style={inputStyle.submitSignupForm}>
-        <Text style={textStyle.submitText}>Cadastre-se</Text>
-      </TouchableHighlight>
-    );
-  };
-
+function SignupForm() {
   return (
-    <View style={containerStyle.formContainer}>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userName && errors.userName ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="user"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userName, errors.userName)}
-          placeholder="Nome" 
-          onChangeText={handleChange('userName')}
-        />
-        {renderErrorText(touched.userName, errors.userName)}
+    <ScrollView style={signupFormStyles.formContainer}>
+      <View style={{ marginTop: 20 }}>
+        {/* <Text style={{ color : '#b3b3b3' }}>Nome</Text> */}
+        <TextInput placeholder="Nome" style={{ borderBottomWidth: 1, width: '80%', borderColor: '#52B788' }} />
       </View>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userEmail && errors.userEmail ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="mail"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userEmail, errors.userEmail)}
-          placeholder="E-mail" 
-          onChangeText={handleChange('userEmail')}
-        />
-        {renderErrorText(touched.userEmail, errors.userEmail)}
-      </View>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userPhone && errors.userPhone ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="smartphone"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userPhone, errors.userPhone)}
-          placeholder="Telefone"
-          onChangeText={handleChange('userPhone')}
-          value={maskPhone(values.userPhone)}
-          keyboardType="phone-pad"
-        />
-        {renderErrorText(touched.userPhone, errors.userPhone)}
-      </View>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userPassword && errors.userPassword ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="lock"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userPassword, errors.userPassword)}
-          placeholder="Senha" 
-          secureTextEntry
-          onChangeText={handleChange('userPassword')}
-        />
-        {renderErrorText(touched.userPassword, errors.userPassword)}
-      </View>
-      {renderSubmitButton()}
-    </View>
+    </ScrollView>
   );
 };
 

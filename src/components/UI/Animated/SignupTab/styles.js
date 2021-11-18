@@ -23,5 +23,18 @@ export const signupTabStyles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingRight: 15,
     paddingTop: 15
+  },
+  tabTitleContainer: {
+    margin: 20
+  },
+  tabTitle: {
+    color: '#101010',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 17
+  },
+  tabDesc: {
+    color: '#b3b3b3',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12
   }
 });
