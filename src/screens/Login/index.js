@@ -5,8 +5,9 @@ import {
   Image,
   StatusBar, 
   KeyboardAvoidingView,
+  BackHandler
 } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 import LoginHeader from '../../components/UI/LoginHeader';
 import LoginForm from '../../components/Forms/LoginForm';
@@ -33,17 +34,40 @@ function Login() {
     }
   }, [isFocused]);
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (isSignupTabOpen) {
+          toggleSignupTabOpen();
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [isSignupTabOpen, toggleSignupTabOpen])
+  );
+
   const toggleSignupTabOpen = useCallback(() => {
     setIsSignupTabOpen(prevState => !prevState);
   }, []);
+
+  function getStatusBarColor() {
+    if (isSignupTabOpen) {
+      return <StatusBar backgroundColor="#326e52" />
+    }
+
+    return <StatusBar backgroundColor="#52B788" />
+  };
 
   return (
     <>
       <View style={containerStyle.mainContainer}>
         <LoginHeader />
-        <StatusBar
-          backgroundColor="#52B788"
-        />
+        {getStatusBarColor()}
         <Snackbar
           openSnack={openSnack}
           setSnackbarStatus={setOpenSnack}
