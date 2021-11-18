@@ -58,25 +58,14 @@ function Routes() {
         />
       );
     }
-
+    
     return (
-      <Stack.Group
-        screenOptions={{
-          headerStyle: { backgroundColor: '#52B788' },
-          headerTintColor: 'white',
-          headerTitleAlign: 'center',
-          headerTitleStyle: { fontFamily: 'Poppins-Medium' }
-        }}
-      >
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            headerTitle: 'Entrar' 
-          }} 
-        />
-      </Stack.Group>
-    )
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }} 
+      />
+    );
   };
 
   return (

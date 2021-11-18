@@ -20,7 +20,7 @@ import ErrorText from '../SignupForm/ErrorText';
 
 import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
 
-function LoginForm({ navigation }) {
+function LoginForm({ toggleSignupTabOpen }) {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -151,7 +151,7 @@ function LoginForm({ navigation }) {
         <View style={containerStyle.submitContainer}>
           {renderSubmitButton()}
           <Text style={textStyle.dividerText}>ou</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={toggleSignupTabOpen}>
             <Text style={textStyle.registerText}>Registre-se</Text>
           </TouchableOpacity>
         </View>

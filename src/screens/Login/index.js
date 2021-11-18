@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   View,
   Text,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
+import LoginHeader from '../../components/UI/LoginHeader';
 import LoginForm from '../../components/Forms/LoginForm';
 import Snackbar from '../../components/UI/Animated/Snackbar';
 import SignupTab from '../../components/UI/Animated/SignupTab';
@@ -16,8 +17,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { containerStyle, textStyle } from './styles';
 
-function Login({ navigation }) {
+function Login() {
   const [openSnack, setOpenSnack] = useState(false);
+  const [isSignupTabOpen, setIsSignupTabOpen] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -31,9 +33,14 @@ function Login({ navigation }) {
     }
   }, [isFocused]);
 
+  const toggleSignupTabOpen = useCallback(() => {
+    setIsSignupTabOpen(prevState => !prevState);
+  }, []);
+
   return (
     <>
       <View style={containerStyle.mainContainer}>
+        <LoginHeader />
         <StatusBar
           backgroundColor="#52B788"
         />
@@ -48,11 +55,11 @@ function Login({ navigation }) {
             />
             <Text style={textStyle.title}>MobileChat</Text>
           </View>
-          <LoginForm navigation={navigation} />
+          <LoginForm toggleSignupTabOpen={toggleSignupTabOpen} />
         </KeyboardAvoidingView>
         <View style={{ flex: 1 }} />
       </View>
-      <SignupTab />
+      <SignupTab toggleSignupTabOpen={toggleSignupTabOpen} isTabOpen={isSignupTabOpen} />
     </>
   );
 };
