@@ -5,6 +5,7 @@ export const signupFormStyles = StyleSheet.create({
     marginLeft: 20
   },
   inputContainer: {
+    width: '100%',
     justifyContent: 'center',
   },
   icon: {
@@ -13,8 +14,12 @@ export const signupFormStyles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
-    width: '90%',
+    width: '95%',
     borderColor: '#52B788',
     paddingLeft: 40
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: '13%'
   }
 });
