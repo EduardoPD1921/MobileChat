@@ -1,55 +1,47 @@
 import { StyleSheet } from 'react-native';
 
-export const containerStyle = StyleSheet.create({
+export const signupFormStyles = StyleSheet.create({
   formContainer: {
-    width: '100%',
-    marginTop: 40,
-    alignItems: 'center'
+    marginLeft: 20
   },
   inputContainer: {
-    width: '70%'
-  }
-});
-
-export const inputStyle = StyleSheet.create({
-  defaultSignupInput: {
-    marginTop: 45,
-    borderBottomColor: '#52B788',
-    borderBottomWidth: 1,
-    paddingLeft: 50,
-    color: 'black'
-  },
-  submitSignupForm: {
-    width: '70%',
-    height: 50,
-    marginTop: 100,
-    alignItems: 'center',
-    backgroundColor: '#52B788',
+    width: '100%',
     justifyContent: 'center',
-    borderRadius: 14
-  }
-});
-
-export const imageStyle = StyleSheet.create({
-  inputIcon: {
+  },
+  icon: {
     position: 'absolute',
-    bottom: 12,
-    left: 15,
-    color: '#74C69D'
-  }
-});
-
-export const textStyle = StyleSheet.create({
-  submitText: {
+    left: 10,
+    color: '#52B788'
+  },
+  input: {
+    borderBottomWidth: 1,
+    width: '95%',
+    borderColor: '#52B788',
+    paddingLeft: 40
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: '13%'
+  },
+  formActionButton: {
+    width: 100,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+    marginTop: 50,
+    marginLeft: 20,
+    marginRight: 20
+  },
+  buttonTitle: {
     color: 'white',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 17
+    fontFamily: 'Poppins-Medium'
   },
   errorText: {
     fontFamily: 'Poppins-Regular',
     fontSize: 13,
     position: 'absolute',
-    bottom: -25,
-    color: 'red'
+    color: 'red',
+    bottom: -25
   }
 });

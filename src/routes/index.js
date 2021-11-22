@@ -10,7 +10,6 @@ const Drawer = createDrawerNavigator();
 
 import SplashScreen from '../screens/SplashScreen';
 import Login from '../screens/Login';
-import Signup from '../screens/Signup';
 import Home from '../screens/Home';
 import Contacts from '../screens/Contacts';
 import AddContact from '../screens/AddContact';
@@ -59,33 +58,14 @@ function Routes() {
         />
       );
     }
-
+    
     return (
-      <Stack.Group
-        screenOptions={{
-          headerStyle: { backgroundColor: '#52B788' },
-          headerTintColor: 'white',
-          headerTitleAlign: 'center',
-          headerTitleStyle: { fontFamily: 'Poppins-Medium' }
-        }}
-      >
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            headerTitle: 'Entrar' 
-          }} 
-        />
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{
-            headerTitle: 'Cadastro',
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS 
-          }}
-        />
-      </Stack.Group>
-    )
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }} 
+      />
+    );
   };
 
   return (

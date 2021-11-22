@@ -1,53 +1,63 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableHighlight, Text, ActivityIndicator } from 'react-native';
-
-import api from '../../../api';
+import { Text, View, ScrollView, TextInput, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
 
 import { useFormik } from 'formik';
 import SignupSchema from '../../../validations/SignupValidation';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import Icon from 'react-native-vector-icons/Feather';
+import api from '../../../api';
 
 import ErrorText from './ErrorText';
 
-import { containerStyle, inputStyle, imageStyle, textStyle } from './styles';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
-function SignupForm({ navigation }) {
+import { signupFormStyles } from './styles';
+
+function SignupForm({ toggleSignupTabOpen, toggleSnackbarOpen }) {
+  const [hidePassword, setHidePassword] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { handleChange, handleSubmit, values, errors, touched } = useFormik({
+  const { handleChange, handleSubmit, resetForm, values, errors, touched } = useFormik({
     initialValues: { userName: '', userEmail: '', userPhone: '', userPassword: '' },
     onSubmit: async values => {
       setIsLoading(true);
-      const { userEmail, userName, userPhone, userPassword } = values;
+
       try {
-        const requestResp = await api.post('/user/store', { userName, userEmail, userPhone, userPassword });
-        await AsyncStorage.setItem('snackbarOpen', 'true');
-        setIsLoading(false);
-        navigation.navigate('Login');
-      } catch(error) {
-        setIsLoading(false);
+        const requestResp = await api.post('/user/store', values);
+        toggleSnackbarOpen();
+        cancelForm();
+      } catch (error) {
         console.warn(error.response.data);
+      } finally {
+        setIsLoading(false);
       }
     },
     validationSchema: SignupSchema
   });
 
-  function maskPhone(rawValue) {
-    return rawValue
-      .replace(/\D/g, "")
-      .replace(/^(\d{2})(\d)/g, "($1) $2")
-      .replace(/(\d)(\d{4})$/, "$1-$2");
-  };
-
-  function inputStyleHandler(touched, error) {
-    if (touched && error) {
-      return [inputStyle.defaultSignupInput, { borderBottomColor: 'red' }];
+  function getSecurePasswordIcon() {
+    if (hidePassword) {
+      return (
+        <TouchableOpacity onPress={toggleHidePassword} style={signupFormStyles.eyeIcon}>
+          <IonIcon name="eye-off" color="#52B788" size={20} />
+        </TouchableOpacity>
+      );
     }
 
-    return inputStyle.defaultSignupInput;
+    return (
+      <TouchableOpacity onPress={toggleHidePassword} style={signupFormStyles.eyeIcon}>
+        <IonIcon name="eye" color="#52B788" size={20} />
+      </TouchableOpacity>
+    );
+  };
+
+  function toggleHidePassword() {
+    setHidePassword(prevState => !prevState);
+  };
+
+  function cancelForm() {
+    resetForm({ values: '' });
+    toggleSignupTabOpen();
   };
 
   function renderErrorText(touched, error) {
@@ -56,97 +66,127 @@ function SignupForm({ navigation }) {
     }
   };
 
-  function renderSubmitButton() {
+  function getIconStyle(touched, error) {
+    if (touched && error) {
+      return [signupFormStyles.icon, { color: 'red' }];
+    }
+
+    return signupFormStyles.icon;
+  };
+
+  function getInputStyle(touched, error) {
+    if (touched && error) {
+      return [signupFormStyles.input, { borderBottomColor: 'red' }];
+    }
+
+    return signupFormStyles.input;
+  };
+
+  function maskPhone(rawValue) {
+    return rawValue
+      .replace(/\D/g, "")
+      .replace(/^(\d{2})(\d)/g, "($1) $2")
+      .replace(/(\d)(\d{4})$/, "$1-$2");
+  };
+
+  function getActionButtons() {
     if (isLoading) {
-      return <ActivityIndicator style={{ marginTop: 100 }} size="large" color="#52B788" />
+      return (
+        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
+          <ActivityIndicator
+            color="#52B788"
+            size={20} 
+          />
+        </View>
+      );
     }
 
     return (
-      <TouchableHighlight onPress={handleSubmit} underlayColor="#40916C" style={inputStyle.submitSignupForm}>
-        <Text style={textStyle.submitText}>Cadastre-se</Text>
-      </TouchableHighlight>
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableHighlight 
+          underlayColor="#bd3734" 
+          onPress={cancelForm} 
+          style={[signupFormStyles.formActionButton, { backgroundColor: '#F34642' }]}
+        >
+          <Text style={signupFormStyles.buttonTitle}>Cancelar</Text>
+        </TouchableHighlight>
+        <TouchableHighlight 
+          underlayColor="#40916C" 
+          onPress={handleSubmit} 
+          style={[signupFormStyles.formActionButton, { backgroundColor: '#52B788' }]}
+        >
+          <Text style={signupFormStyles.buttonTitle}>Cadastrar</Text>
+        </TouchableHighlight>
+      </View>
     );
   };
 
   return (
-    <View style={containerStyle.formContainer}>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userName && errors.userName ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="user"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userName, errors.userName)}
-          placeholder="Nome" 
-          onChangeText={handleChange('userName')}
-        />
-        {renderErrorText(touched.userName, errors.userName)}
+    <ScrollView style={signupFormStyles.formContainer}>
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={signupFormStyles.inputContainer}>
+          <FeatherIcon 
+            name="user"  
+            size={20} 
+            style={getIconStyle(touched.userName, errors.userName)} 
+          />
+          <TextInput 
+            value={values.userName} 
+            onChangeText={handleChange('userName')} 
+            placeholder="Nome" 
+            style={getInputStyle(touched.userName, errors.userName)} 
+          />
+          {renderErrorText(touched.userName, errors.userName)}
+        </View>
+        <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
+          <FeatherIcon
+            name="mail" 
+            size={20} 
+            style={getIconStyle(touched.userEmail, errors.userEmail)} 
+          />
+          <TextInput 
+            keyboardType="email-address"
+            value={values.userEmail}
+            onChangeText={handleChange('userEmail')} 
+            placeholder="E-mail"
+            style={getInputStyle(touched.userEmail, errors.userEmail)} 
+          />
+          {renderErrorText(touched.userEmail, errors.userEmail)}
+        </View>
+        <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
+          <FeatherIcon 
+            name="smartphone" 
+            size={20} 
+            style={getIconStyle(touched.userPhone, errors.userPhone)} 
+          />
+          <TextInput 
+            value={maskPhone(values.userPhone)}
+            onChangeText={handleChange('userPhone')} 
+            placeholder="Telefone" 
+            keyboardType="phone-pad"
+            style={getInputStyle(touched.userPhone, errors.userPhone)} 
+          />
+          {renderErrorText(touched.userPhone, errors.userPhone)}
+        </View>
+        <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
+          <FeatherIcon 
+            name="lock"  
+            size={20} 
+            style={getIconStyle(touched.userPassword, errors.userPassword)} 
+          />
+          <TextInput 
+            value={values.userPassword}
+            onChangeText={handleChange('userPassword')} 
+            secureTextEntry={hidePassword} 
+            placeholder="Senha" 
+            style={touched.userPassword && errors.userPassword ? [signupFormStyles.input, { borderBottomColor: 'red', paddingRight: 60 }] : [signupFormStyles.input, { paddingRight: 60 }]}
+          />
+          {getSecurePasswordIcon()}
+          {renderErrorText(touched.userPassword, errors.userPassword)}
+        </View>
+        {getActionButtons()}
       </View>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userEmail && errors.userEmail ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="mail"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userEmail, errors.userEmail)}
-          placeholder="E-mail" 
-          onChangeText={handleChange('userEmail')}
-        />
-        {renderErrorText(touched.userEmail, errors.userEmail)}
-      </View>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userPhone && errors.userPhone ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="smartphone"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userPhone, errors.userPhone)}
-          placeholder="Telefone"
-          onChangeText={handleChange('userPhone')}
-          value={maskPhone(values.userPhone)}
-          keyboardType="phone-pad"
-        />
-        {renderErrorText(touched.userPhone, errors.userPhone)}
-      </View>
-      <View style={containerStyle.inputContainer}>
-        <Icon
-          style={
-            touched.userPassword && errors.userPassword ?
-            [imageStyle.inputIcon, { color: 'red' }] :
-            imageStyle.inputIcon
-          }
-          name="lock"
-          size={20} 
-        />
-        <TextInput
-          placeholderTextColor="#9f9f9f"
-          style={inputStyleHandler(touched.userPassword, errors.userPassword)}
-          placeholder="Senha" 
-          secureTextEntry
-          onChangeText={handleChange('userPassword')}
-        />
-        {renderErrorText(touched.userPassword, errors.userPassword)}
-      </View>
-      {renderSubmitButton()}
-    </View>
+    </ScrollView>
   );
 };
 
