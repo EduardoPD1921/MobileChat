@@ -55,7 +55,7 @@ function SignupTab({ isTabOpen, toggleSignupTabOpen }) {
           <Text style={signupTabStyles.tabTitle}>Cadastre-se</Text>
           <Text style={signupTabStyles.tabDesc}>Insira suas informações para continuar</Text>
         </View>
-        <SignupForm />
+        <SignupForm toggleSignupTabOpen={toggleSignupTabOpen} />
       </Animated.View>
       {isTabOpen ? openTab() : closeTab()}
     </>

@@ -2,20 +2,24 @@ import React, { useState } from 'react';
 import { Text, View, ScrollView, TextInput, TouchableOpacity, TouchableHighlight } from 'react-native';
 
 import { useFormik } from 'formik';
+import SignupSchema from '../../../validations/SignupValidation';
+
+import ErrorText from './ErrorText';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { signupFormStyles } from './styles';
 
-function SignupForm() {
+function SignupForm({ toggleSignupTabOpen }) {
   const [hidePassword, setHidePassword] = useState(true);
 
-  const { handleChange, handleSubmit, resetForm, values } = useFormik({
+  const { handleChange, handleSubmit, resetForm, values, errors, touched } = useFormik({
     initialValues: { userName: '', userEmail: '', userPhone: '', userPassword: '' },
     onSubmit: values => {
       console.log(values);
-    }
+    },
+    validationSchema: SignupSchema
   });
 
   function getSecurePasswordIcon() {
@@ -40,48 +44,93 @@ function SignupForm() {
 
   function cancelForm() {
     resetForm({ values: '' });
+    toggleSignupTabOpen();
+  };
+
+  function renderErrorText(touched, error) {
+    if (touched && error) {
+      return <ErrorText>{error}</ErrorText>
+    }
+  };
+
+  function getIconStyle(touched, error) {
+    if (touched && error) {
+      return [signupFormStyles.icon, { color: 'red' }];
+    }
+
+    return signupFormStyles.icon;
+  };
+
+  function getInputStyle(touched, error) {
+    if (touched && error) {
+      return [signupFormStyles.input, { borderBottomColor: 'red' }];
+    }
+
+    return signupFormStyles.input;
   };
 
   return (
     <ScrollView style={signupFormStyles.formContainer}>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View style={signupFormStyles.inputContainer}>
-          <FeatherIcon name="user" color="#52B788" size={20} style={signupFormStyles.icon} />
+          <FeatherIcon 
+            name="user"  
+            size={20} 
+            style={getIconStyle(touched.userName, errors.userName)} 
+          />
           <TextInput 
             value={values.userName} 
             onChangeText={handleChange('userName')} 
             placeholder="Nome" 
-            style={signupFormStyles.input} 
+            style={getInputStyle(touched.userName, errors.userName)} 
           />
+          {renderErrorText(touched.userName, errors.userName)}
         </View>
         <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
-          <FeatherIcon name="mail" color="#52B788" size={20} style={signupFormStyles.icon} />
+          <FeatherIcon
+            name="mail" 
+            size={20} 
+            style={getIconStyle(touched.userEmail, errors.userEmail)} 
+          />
           <TextInput 
+            keyboardType="email-address"
             value={values.userEmail}
             onChangeText={handleChange('userEmail')} 
-            placeholder="E-mail" 
-            style={signupFormStyles.input} 
+            placeholder="E-mail"
+            style={getInputStyle(touched.userEmail, errors.userEmail)} 
           />
+          {renderErrorText(touched.userEmail, errors.userEmail)}
         </View>
         <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
-          <FeatherIcon name="smartphone" color="#52B788" size={20} style={signupFormStyles.icon} />
+          <FeatherIcon 
+            name="smartphone" 
+            size={20} 
+            style={getIconStyle(touched.userPhone, errors.userPhone)} 
+          />
           <TextInput 
             value={values.userPhone}
             onChangeText={handleChange('userPhone')} 
             placeholder="Telefone" 
-            style={signupFormStyles.input} 
+            keyboardType="phone-pad"
+            style={getInputStyle(touched.userPhone, errors.userPhone)} 
           />
+          {renderErrorText(touched.userPhone, errors.userPhone)}
         </View>
         <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
-          <FeatherIcon name="lock" color="#52B788" size={20} style={signupFormStyles.icon} />
+          <FeatherIcon 
+            name="lock"  
+            size={20} 
+            style={getIconStyle(touched.userPassword, errors.userPassword)} 
+          />
           <TextInput 
             value={values.userPassword}
             onChangeText={handleChange('userPassword')} 
             secureTextEntry={hidePassword} 
             placeholder="Senha" 
-            style={[signupFormStyles.input, { paddingRight: 35 }]} 
+            style={touched.userPassword && errors.userPassword ? [signupFormStyles.input, { borderBottomColor: 'red', paddingRight: 60 }] : [signupFormStyles.input, { paddingRight: 60 }]}
           />
           {getSecurePasswordIcon()}
+          {renderErrorText(touched.userPassword, errors.userPassword)}
         </View>
         <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight 

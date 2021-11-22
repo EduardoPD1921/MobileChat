@@ -10,7 +10,8 @@ export const signupFormStyles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    left: 10
+    left: 10,
+    color: '#52B788'
   },
   input: {
     borderBottomWidth: 1,
@@ -28,12 +29,19 @@ export const signupFormStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
-    marginTop: 40,
+    marginTop: 50,
     marginLeft: 20,
     marginRight: 20
   },
   buttonTitle: {
     color: 'white',
     fontFamily: 'Poppins-Medium'
+  },
+  errorText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 13,
+    position: 'absolute',
+    color: 'red',
+    bottom: -25
   }
 });
