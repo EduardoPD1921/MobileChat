@@ -69,6 +69,13 @@ function SignupForm({ toggleSignupTabOpen }) {
     return signupFormStyles.input;
   };
 
+  function maskPhone(rawValue) {
+    return rawValue
+      .replace(/\D/g, "")
+      .replace(/^(\d{2})(\d)/g, "($1) $2")
+      .replace(/(\d)(\d{4})$/, "$1-$2");
+  };
+
   return (
     <ScrollView style={signupFormStyles.formContainer}>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -108,7 +115,7 @@ function SignupForm({ toggleSignupTabOpen }) {
             style={getIconStyle(touched.userPhone, errors.userPhone)} 
           />
           <TextInput 
-            value={values.userPhone}
+            value={maskPhone(values.userPhone)}
             onChangeText={handleChange('userPhone')} 
             placeholder="Telefone" 
             keyboardType="phone-pad"
