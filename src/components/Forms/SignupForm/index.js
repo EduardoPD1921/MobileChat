@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView, TextInput, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Text, View, ScrollView, TextInput, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
 
 import { useFormik } from 'formik';
 import SignupSchema from '../../../validations/SignupValidation';
+
+import api from '../../../api';
 
 import ErrorText from './ErrorText';
 
@@ -11,13 +13,24 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { signupFormStyles } from './styles';
 
-function SignupForm({ toggleSignupTabOpen }) {
+function SignupForm({ toggleSignupTabOpen, toggleSnackbarOpen }) {
   const [hidePassword, setHidePassword] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { handleChange, handleSubmit, resetForm, values, errors, touched } = useFormik({
     initialValues: { userName: '', userEmail: '', userPhone: '', userPassword: '' },
-    onSubmit: values => {
-      console.log(values);
+    onSubmit: async values => {
+      setIsLoading(true);
+
+      try {
+        const requestResp = await api.post('/user/store', values);
+        toggleSnackbarOpen();
+        cancelForm();
+      } catch (error) {
+        console.warn(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
     },
     validationSchema: SignupSchema
   });
@@ -74,6 +87,38 @@ function SignupForm({ toggleSignupTabOpen }) {
       .replace(/\D/g, "")
       .replace(/^(\d{2})(\d)/g, "($1) $2")
       .replace(/(\d)(\d{4})$/, "$1-$2");
+  };
+
+  function getActionButtons() {
+    if (isLoading) {
+      return (
+        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
+          <ActivityIndicator
+            color="#52B788"
+            size={20} 
+          />
+        </View>
+      );
+    }
+
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableHighlight 
+          underlayColor="#bd3734" 
+          onPress={cancelForm} 
+          style={[signupFormStyles.formActionButton, { backgroundColor: '#F34642' }]}
+        >
+          <Text style={signupFormStyles.buttonTitle}>Cancelar</Text>
+        </TouchableHighlight>
+        <TouchableHighlight 
+          underlayColor="#40916C" 
+          onPress={handleSubmit} 
+          style={[signupFormStyles.formActionButton, { backgroundColor: '#52B788' }]}
+        >
+          <Text style={signupFormStyles.buttonTitle}>Cadastrar</Text>
+        </TouchableHighlight>
+      </View>
+    );
   };
 
   return (
@@ -139,22 +184,7 @@ function SignupForm({ toggleSignupTabOpen }) {
           {getSecurePasswordIcon()}
           {renderErrorText(touched.userPassword, errors.userPassword)}
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableHighlight 
-            underlayColor="#bd3734" 
-            onPress={cancelForm} 
-            style={[signupFormStyles.formActionButton, { backgroundColor: '#F34642' }]}
-          >
-            <Text style={signupFormStyles.buttonTitle}>Cancelar</Text>
-          </TouchableHighlight>
-          <TouchableHighlight 
-            underlayColor="#40916C" 
-            onPress={handleSubmit} 
-            style={[signupFormStyles.formActionButton, { backgroundColor: '#52B788' }]}
-          >
-            <Text style={signupFormStyles.buttonTitle}>Cadastrar</Text>
-          </TouchableHighlight>
-        </View>
+        {getActionButtons()}
       </View>
     </ScrollView>
   );

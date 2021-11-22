@@ -12,7 +12,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { signupTabStyles } from './styles';
 
-function SignupTab({ isTabOpen, toggleSignupTabOpen }) {
+function SignupTab({ isTabOpen, toggleSignupTabOpen, toggleSnackbarOpen }) {
   const verticalPositionAnimation = useSharedValue('-85%');
   const opacityAnimation = useSharedValue(0);
   const zIndexAnimation = useSharedValue(-1);
@@ -55,7 +55,7 @@ function SignupTab({ isTabOpen, toggleSignupTabOpen }) {
           <Text style={signupTabStyles.tabTitle}>Cadastre-se</Text>
           <Text style={signupTabStyles.tabDesc}>Insira suas informações para continuar</Text>
         </View>
-        <SignupForm toggleSignupTabOpen={toggleSignupTabOpen} />
+        <SignupForm toggleSnackbarOpen={toggleSnackbarOpen} toggleSignupTabOpen={toggleSignupTabOpen} />
       </Animated.View>
       {isTabOpen ? openTab() : closeTab()}
     </>

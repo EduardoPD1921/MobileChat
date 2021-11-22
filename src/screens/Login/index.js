@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { 
   View,
   Text,
@@ -7,32 +7,18 @@ import {
   KeyboardAvoidingView,
   BackHandler
 } from 'react-native';
-import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import LoginHeader from '../../components/UI/LoginHeader';
 import LoginForm from '../../components/Forms/LoginForm';
 import Snackbar from '../../components/UI/Animated/Snackbar';
 import SignupTab from '../../components/UI/Animated/SignupTab';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { containerStyle, textStyle } from './styles';
 
 function Login() {
   const [openSnack, setOpenSnack] = useState(false);
   const [isSignupTabOpen, setIsSignupTabOpen] = useState(false);
-
-  const isFocused = useIsFocused();
-
-  useEffect(async () => {
-    if (isFocused) {
-      const snackbarOpen = await AsyncStorage.getItem('snackbarOpen');
-      if (snackbarOpen) {
-        setOpenSnack(true);
-        AsyncStorage.removeItem('snackbarOpen');
-      }
-    }
-  }, [isFocused]);
 
   useFocusEffect(
     useCallback(() => {
@@ -53,6 +39,10 @@ function Login() {
 
   const toggleSignupTabOpen = useCallback(() => {
     setIsSignupTabOpen(prevState => !prevState);
+  }, []);
+
+  const toggleSnackbarOpen = useCallback(() => {
+    setOpenSnack(prevState => !prevState);
   }, []);
 
   function getStatusBarColor() {
@@ -83,7 +73,11 @@ function Login() {
         </KeyboardAvoidingView>
         <View style={{ flex: 1 }} />
       </View>
-      <SignupTab toggleSignupTabOpen={toggleSignupTabOpen} isTabOpen={isSignupTabOpen} />
+      <SignupTab 
+        toggleSnackbarOpen={toggleSnackbarOpen} 
+        toggleSignupTabOpen={toggleSignupTabOpen} 
+        isTabOpen={isSignupTabOpen} 
+      />
     </>
   );
 };
