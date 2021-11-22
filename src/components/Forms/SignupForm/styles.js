@@ -21,5 +21,19 @@ export const signupFormStyles = StyleSheet.create({
   eyeIcon: {
     position: 'absolute',
     right: '13%'
+  },
+  formActionButton: {
+    width: 100,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+    marginTop: 40,
+    marginLeft: 20,
+    marginRight: 20
+  },
+  buttonTitle: {
+    color: 'white',
+    fontFamily: 'Poppins-Medium'
   }
 });

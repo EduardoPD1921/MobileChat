@@ -11,7 +11,7 @@ import { signupFormStyles } from './styles';
 function SignupForm() {
   const [hidePassword, setHidePassword] = useState(true);
 
-  const { handleChange, handleSubmit } = useFormik({
+  const { handleChange, handleSubmit, resetForm, values } = useFormik({
     initialValues: { userName: '', userEmail: '', userPhone: '', userPassword: '' },
     onSubmit: values => {
       console.log(values);
@@ -38,29 +38,65 @@ function SignupForm() {
     setHidePassword(prevState => !prevState);
   };
 
+  function cancelForm() {
+    resetForm({ values: '' });
+  };
+
   return (
     <ScrollView style={signupFormStyles.formContainer}>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View style={signupFormStyles.inputContainer}>
           <FeatherIcon name="user" color="#52B788" size={20} style={signupFormStyles.icon} />
-          <TextInput onChangeText={handleChange('userName')} placeholder="Nome" style={signupFormStyles.input} />
+          <TextInput 
+            value={values.userName} 
+            onChangeText={handleChange('userName')} 
+            placeholder="Nome" 
+            style={signupFormStyles.input} 
+          />
         </View>
-        <View style={[signupFormStyles.inputContainer, { marginTop: 30 }]}>
+        <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
           <FeatherIcon name="mail" color="#52B788" size={20} style={signupFormStyles.icon} />
-          <TextInput onChangeText={handleChange('userEmail')} placeholder="E-mail" style={signupFormStyles.input} />
+          <TextInput 
+            value={values.userEmail}
+            onChangeText={handleChange('userEmail')} 
+            placeholder="E-mail" 
+            style={signupFormStyles.input} 
+          />
         </View>
-        <View style={[signupFormStyles.inputContainer, { marginTop: 30 }]}>
+        <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
           <FeatherIcon name="smartphone" color="#52B788" size={20} style={signupFormStyles.icon} />
-          <TextInput onChangeText={handleChange('userPhone')} placeholder="Telefone" style={signupFormStyles.input} />
+          <TextInput 
+            value={values.userPhone}
+            onChangeText={handleChange('userPhone')} 
+            placeholder="Telefone" 
+            style={signupFormStyles.input} 
+          />
         </View>
-        <View style={[signupFormStyles.inputContainer, { marginTop: 30 }]}>
+        <View style={[signupFormStyles.inputContainer, { marginTop: 40 }]}>
           <FeatherIcon name="lock" color="#52B788" size={20} style={signupFormStyles.icon} />
-          <TextInput onChangeText={handleChange('userPassword')} secureTextEntry={hidePassword} placeholder="Senha" style={[signupFormStyles.input, { paddingRight: 35 }]} />
+          <TextInput 
+            value={values.userPassword}
+            onChangeText={handleChange('userPassword')} 
+            secureTextEntry={hidePassword} 
+            placeholder="Senha" 
+            style={[signupFormStyles.input, { paddingRight: 35 }]} 
+          />
           {getSecurePasswordIcon()}
         </View>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableHighlight style={{ width: 100, height: 40, backgroundColor: '#52B788', justifyContent: 'center', alignItems: 'center', borderRadius: 8, marginTop: 40 }}>
-            <Text style={{ color: 'white', fontFamily: 'Poppins-Medium' }}>Cadastrar</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableHighlight 
+            underlayColor="#bd3734" 
+            onPress={cancelForm} 
+            style={[signupFormStyles.formActionButton, { backgroundColor: '#F34642' }]}
+          >
+            <Text style={signupFormStyles.buttonTitle}>Cancelar</Text>
+          </TouchableHighlight>
+          <TouchableHighlight 
+            underlayColor="#40916C" 
+            onPress={handleSubmit} 
+            style={[signupFormStyles.formActionButton, { backgroundColor: '#52B788' }]}
+          >
+            <Text style={signupFormStyles.buttonTitle}>Cadastrar</Text>
           </TouchableHighlight>
         </View>
       </View>
