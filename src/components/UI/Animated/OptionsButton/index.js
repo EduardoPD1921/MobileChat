@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Animated, Pressable } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -13,6 +13,7 @@ function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
   const [groupIconYAnimation] = useState(new Animated.Value(0));
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+  const AnimatedIcon = Animated.createAnimatedComponent(AntDesignIcon);
 
   function openOptions() {
     Animated.parallel([
@@ -89,14 +90,27 @@ function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
       >
         <MaterialIcon name="group-add" color="white" size={20} />
       </AnimatedPressable>
-      <AnimatedPressable 
+      {/* <AnimatedPressable 
         onPress={toggleOptions} 
         android_ripple={{ color: '#D4EDE1', radius: 30, borderless: true }} 
         style={[containerStyle.mainIconContainer, { transform: [{ rotate: interpolateRotating }] }]}
       > 
         <AntDesignIcon name="plus" color="white" size={25} />
         {isOpenOptions ? openOptions() : closeOptions()}
-      </AnimatedPressable>
+      </AnimatedPressable> */}
+      <Pressable
+        onPress={toggleOptions}
+        android_ripple={{ color: '#D4EDE1', radius: 30, borderless: true }}
+        style={containerStyle.mainIconContainer}
+      >
+        <AnimatedIcon 
+          name="plus" 
+          color="white" 
+          size={25}
+          style={{ transform: [{ rotate: interpolateRotating }] }} 
+        />
+        {isOpenOptions ? openOptions() : closeOptions()}
+      </Pressable>
     </>
   );
 };

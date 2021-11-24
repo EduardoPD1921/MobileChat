@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { ChatContext } from '../../contexts/ChatContext';
-import { View, StatusBar, ScrollView, Button } from 'react-native';
+import { View, StatusBar, ScrollView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import PushNotification from 'react-native-push-notification';
 
@@ -82,8 +82,6 @@ function Home({ navigation }) {
       <StatusBar backgroundColor="#52B788" />
       <OptionsButton navigation={navigation} isOpenOptions={isOpenOptions} toggleOptions={toggleOptions} />
       <HomeHeader notifications={authUserInfo} navigation={navigation} openTab={openTab} />
-      {/* <Button title="Test" onPress={() => console.log(userChats)} /> */}
-      {/* <ChatCard /> */}
       <ScrollView>
         {renderChats()}
       </ScrollView>

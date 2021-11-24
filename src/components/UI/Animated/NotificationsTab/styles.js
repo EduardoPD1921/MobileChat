@@ -8,7 +8,8 @@ export const containerStyle = StyleSheet.create({
     backgroundColor: 'white',
     bottom: -400,
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    borderTopRightRadius: 20,
+    zIndex: 20
   },
   modalBackground: {
     position: 'absolute',
