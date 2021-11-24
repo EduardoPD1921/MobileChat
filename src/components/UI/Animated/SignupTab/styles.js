@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const signupTabStyles = StyleSheet.create({
   signupTabContainer: {
     width: '100%',
-    height: '85%',
+    height: '100%',
     position: 'absolute',
     backgroundColor: 'white',
     borderTopLeftRadius: 20,

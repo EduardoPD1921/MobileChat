@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,20 +13,36 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import { signupTabStyles } from './styles';
 
 function SignupTab({ isTabOpen, toggleSignupTabOpen, toggleSnackbarOpen }) {
-  const verticalPositionAnimation = useSharedValue('-85%');
+  const verticalPositionAnimation = useSharedValue('-100%');
   const opacityAnimation = useSharedValue(0);
   const zIndexAnimation = useSharedValue(-1);
 
+  useEffect(() => {
+    if (isTabOpen) {
+      const signupFullScreen = Keyboard.addListener('keyboardDidShow', () => {
+        onKeyboardShow();
+      });
+
+      return () => {
+        signupFullScreen.remove();
+      };
+    }
+  }, [isTabOpen]);
+
   function openTab() {
-    verticalPositionAnimation.value = withTiming('0%', { duration: 300 });
+    verticalPositionAnimation.value = withTiming('-15%', { duration: 300 });
     opacityAnimation.value = withTiming(0.4, { duration: 300 });
     zIndexAnimation.value = withTiming(5, { duration: 300 });
   };
 
   function closeTab() {
-    verticalPositionAnimation.value = withTiming('-85%', { duration: 100 });
+    verticalPositionAnimation.value = withTiming('-100%', { duration: 100 });
     opacityAnimation.value = withTiming(0, { duration: 300 });
     zIndexAnimation.value = withTiming(-1, { duration: 100 });
+  };
+
+  function onKeyboardShow() {
+    verticalPositionAnimation.value = withTiming('0%', { duration: 300 });
   };
 
   const verticalPositionStyle = useAnimatedStyle(() => {
