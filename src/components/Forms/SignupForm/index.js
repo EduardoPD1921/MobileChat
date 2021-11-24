@@ -122,7 +122,7 @@ function SignupForm({ toggleSignupTabOpen, toggleSnackbarOpen }) {
   };
 
   return (
-    <ScrollView style={signupFormStyles.formContainer}>
+    <View style={signupFormStyles.formContainer}>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View style={signupFormStyles.inputContainer}>
           <FeatherIcon 
@@ -186,7 +186,7 @@ function SignupForm({ toggleSignupTabOpen, toggleSnackbarOpen }) {
         </View>
         {getActionButtons()}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
