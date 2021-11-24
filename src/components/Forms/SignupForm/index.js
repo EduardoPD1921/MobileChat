@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView, TextInput, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
 
 import { useFormik } from 'formik';
 import SignupSchema from '../../../validations/SignupValidation';

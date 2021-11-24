@@ -10,7 +10,8 @@ export const containerStyle = StyleSheet.create({
     right: 15,
     borderRadius: 30,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: 10
   },
   contactIconContainer: {
     position: 'absolute',
@@ -21,6 +22,6 @@ export const containerStyle = StyleSheet.create({
     right: 20,
     borderRadius: 30,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 });
