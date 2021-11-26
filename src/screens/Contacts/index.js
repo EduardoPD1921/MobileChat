@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import api from '../../api';
 
 import ContactsHeader from '../../components/UI/Animated/ContactsHeader';
 import ContactCard from '../../components/UI/Animated/ContactCard';
+import DeleteAlert from '../../components/UI/Animated/DeleteAlert';
 
 import { containerStyle } from './styles';
 
 function Contacts({ navigation }) {
   const [userContacts, setUserContacts] = useState([]);
   const [selectedContact, setSelectedContact] = useState('');
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -22,6 +24,10 @@ function Contacts({ navigation }) {
         .catch(error => console.log(error.response.data));
     }
   }, [isFocused]);
+
+  function toggleAlertOPen() {
+    setIsAlertOpen(prevState => !prevState);
+  };
 
   const handleLongPress = useCallback((data) => {
     setSelectedContact(data);
@@ -57,15 +63,19 @@ function Contacts({ navigation }) {
   };
 
   return (
-    <View style={containerStyle.mainScreenContainer}>
-      <ContactsHeader 
-        navigation={navigation} 
-        selectedContact={selectedContact} 
-        clearSelectedContact={clearSelectedContact} 
-        updateUserContacts={updateUserContacts}
-      />
-      {renderContacts()}
-    </View>
+    <>
+      <DeleteAlert isAlertOpen={isAlertOpen} />
+      <View style={containerStyle.mainScreenContainer}>
+        <ContactsHeader 
+          navigation={navigation} 
+          selectedContact={selectedContact} 
+          clearSelectedContact={clearSelectedContact} 
+          updateUserContacts={updateUserContacts}
+        />
+        {renderContacts()}
+      </View>
+      <Text onPress={toggleAlertOPen}>Teste</Text>
+    </>
   );
 };
 
