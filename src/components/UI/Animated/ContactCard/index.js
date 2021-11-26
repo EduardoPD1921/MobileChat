@@ -16,7 +16,7 @@ import { componentStyles } from './styles';
 import userDefaultImage from '../../../../assets/images/userDefaultImage.png';
 import { iconStyle } from '../../HomeHeader/styles';
 
-function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSelectedContact, selectedContact }) {
+function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSelectedContact, selectedContact, clearSelectedContact }) {
   const { authUserInfo } = useContext(AuthContext);
 
   const iconScaleAnimation = useSharedValue(0);
@@ -37,29 +37,41 @@ function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSe
     }
   });
 
-  function createChat() {
-    const chatUsers = [
-      {
-        _id: authUserInfo.id,
-        name: authUserInfo.name,
-        email: authUserInfo.email,
-        phone: authUserInfo.phone
-      },
-      {
-        _id: contactId,
-        name: contactName,
-        email: contactEmail,
-        phone: contactPhone
-      }
-    ]
+  // function createChat() {
+  //   const chatUsers = [
+  //     {
+  //       _id: authUserInfo.id,
+  //       name: authUserInfo.name,
+  //       email: authUserInfo.email,
+  //       phone: authUserInfo.phone
+  //     },
+  //     {
+  //       _id: contactId,
+  //       name: contactName,
+  //       email: contactEmail,
+  //       phone: contactPhone
+  //     }
+  //   ]
 
-    api.post('/chat/store', { chatUsers })
-      .then(resp => console.log(resp.data))
-      .catch(error => console.log(error.response.data));
+  //   api.post('/chat/store', { chatUsers })
+  //     .then(resp => console.log(resp.data))
+  //     .catch(error => console.log(error.response.data));
+  // };
+
+  function onPressHandler() {
+    if (selectedContact) {
+      if (selectedContact === contactId) {
+        clearSelectedContact();
+      } else {
+        setSelectedContact(contactId);
+      }
+    } else {
+      console.log('create-chat');
+    }
   };
 
   return (
-    <Pressable onPress={() => createChat()} onLongPress={() => setSelectedContact(contactId)} android_ripple={{ color: '#b4b4b4' }}>
+    <Pressable onPress={onPressHandler} onLongPress={() => setSelectedContact(contactId)} android_ripple={{ color: '#b4b4b4' }}>
       <View style={[componentStyles.cardContainer, { backgroundColor: contactId === selectedContact ? '#eaeaea' : null }]}>
         <View style={componentStyles.imageContainer}>
           <Image style={componentStyles.image} source={userDefaultImage} />

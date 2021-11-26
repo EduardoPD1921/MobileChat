@@ -6,11 +6,13 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 
+import api from '../../../../api';
+
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, textStyle, iconStyle } from './styles';
 
-function ContactsHeader({ navigation, selectedContact, clearSelectedContact }) {
+function ContactsHeader({ navigation, selectedContact, clearSelectedContact, updateUserContacts }) {
   const menuOpacityAnimation = useSharedValue(1);
   const closeOpacityAnimation = useSharedValue(0);
   const closeZindexAnimation = useSharedValue(-10);
@@ -33,6 +35,14 @@ function ContactsHeader({ navigation, selectedContact, clearSelectedContact }) {
     closeZindexAnimation.value = withTiming(-10, { duration: 200 });
     headerTitleAnimation.value = withTiming(0, { duration: 150 });
     iconScaleAnimation.value = withTiming(0);
+  };
+
+  function deleteContact() {
+    api.put('/user/deleteContact', { contactId: selectedContact })
+      .then(resp => updateUserContacts(resp.data.contacts))
+      .catch(error => console.log(error.response.data));
+    
+    clearSelectedContact();
   };
 
   const opacityStyle = useAnimatedStyle(() => {
@@ -97,7 +107,7 @@ function ContactsHeader({ navigation, selectedContact, clearSelectedContact }) {
         </AnimatedPressable>
         <AnimatedPressable
           style={[iconStyle.search, closeStyle]}
-          onPress={() => console.log('test')}
+          onPress={deleteContact}
           android_ripple={{ color: '#D4EDE1', borderless: true }}
         >
           <IonIcon

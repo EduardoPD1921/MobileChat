@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import api from '../../api';
@@ -27,6 +27,10 @@ function Contacts({ navigation }) {
     setSelectedContact(data);
   }, []);
 
+  const updateUserContacts = useCallback((data) => {
+    setUserContacts(data);
+  }, []);
+
   const clearSelectedContact = useCallback(() => {
     setSelectedContact('');
   }, []);
@@ -43,7 +47,8 @@ function Contacts({ navigation }) {
               contactPhone={contact.phone}
               contactEmail={contact.email}
               selectedContact={selectedContact}
-              setSelectedContact={handleLongPress} 
+              setSelectedContact={handleLongPress}
+              clearSelectedContact={clearSelectedContact} 
             />
           );
         })}
@@ -53,11 +58,13 @@ function Contacts({ navigation }) {
 
   return (
     <View style={containerStyle.mainScreenContainer}>
-      <ContactsHeader navigation={navigation} selectedContact={selectedContact} clearSelectedContact={clearSelectedContact} />
+      <ContactsHeader 
+        navigation={navigation} 
+        selectedContact={selectedContact} 
+        clearSelectedContact={clearSelectedContact} 
+        updateUserContacts={updateUserContacts}
+      />
       {renderContacts()}
-      <Text onPress={() => console.log(!!selectedContact)}>
-        Teste
-      </Text>
     </View>
   );
 };
