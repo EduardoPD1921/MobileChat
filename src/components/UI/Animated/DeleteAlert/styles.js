@@ -20,6 +20,6 @@ export const deleteAlertStyles = StyleSheet.create({
     backgroundColor: 'white',
     position: 'absolute',
     alignSelf: 'center',
-    top: '35%'
+    // top: '35%'
   }
 });

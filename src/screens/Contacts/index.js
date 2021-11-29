@@ -25,7 +25,7 @@ function Contacts({ navigation }) {
     }
   }, [isFocused]);
 
-  function toggleAlertOPen() {
+  function toggleAlertOpen() {
     setIsAlertOpen(prevState => !prevState);
   };
 
@@ -64,7 +64,7 @@ function Contacts({ navigation }) {
 
   return (
     <>
-      <DeleteAlert isAlertOpen={isAlertOpen} />
+      <DeleteAlert toggleAlertOpen={toggleAlertOpen} isAlertOpen={isAlertOpen} />
       <View style={containerStyle.mainScreenContainer}>
         <ContactsHeader 
           navigation={navigation} 
@@ -74,7 +74,7 @@ function Contacts({ navigation }) {
         />
         {renderContacts()}
       </View>
-      <Text onPress={toggleAlertOPen}>Teste</Text>
+      <Text onPress={toggleAlertOpen}>Teste</Text>
     </>
   );
 };
