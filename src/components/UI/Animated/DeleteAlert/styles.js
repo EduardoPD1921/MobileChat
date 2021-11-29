@@ -12,12 +12,14 @@ export const deleteAlertStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: -10
+    alignItems: 'center'
   },
   alertContainer: {
-    width: 200,
-    height: 100,
-    backgroundColor: 'blue'
+    width: '80%',
+    height: 200,
+    backgroundColor: 'white',
+    position: 'absolute',
+    alignSelf: 'center',
+    top: '35%'
   }
 });

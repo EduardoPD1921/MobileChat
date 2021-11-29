@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -9,42 +9,41 @@ import Animated, {
 import { deleteAlertStyles } from './styles';
 
 function DeleteAlert({ isAlertOpen }) {
-  const scaleAnimation = useSharedValue(0);
-  const opacityAnimation = useSharedValue(0);
-  const zIndexAnimation = useSharedValue(-1);
+  const backdropOpacity = useSharedValue(0);
+  const alertOpacity = useSharedValue(0);
+  const verticalPosition = useSharedValue(30);
 
   function openAlert() {
-    scaleAnimation.value = withTiming(1, { duration: 200 });
-    opacityAnimation.value = withTiming(0.3, { duration: 200 });
-    zIndexAnimation.value = withTiming(1, { duration: 200 });
+    backdropOpacity.value = withTiming(0.3, { duration: 300 });
+    alertOpacity.value = withTiming(1, { duration: 200 });
+    verticalPosition.value = withTiming(0, { duration: 250 });
   };
 
   function closeAlert() {
-    scaleAnimation.value = withTiming(0, { duration: 200 });
+    // scaleAnimation.value = withTiming(0, { duration: 200 });
   };
 
   const alertContainerAnimationStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ scale: scaleAnimation.value }],
-      zIndex: zIndexAnimation.value + 1
+      opacity: alertOpacity.value,
+      transform: [{ translateY: verticalPosition.value }]
     }
   });
 
   const backdropAnimationStyle = useAnimatedStyle(() => {
     return {
-      opacity: opacityAnimation.value,
-      zIndex: zIndexAnimation.value
+      opacity: backdropOpacity.value
     }
   });
 
   return (
     <>
-      <Animated.View style={[deleteAlertStyles.backdropContainer, backdropAnimationStyle]} />
-      <View style={[deleteAlertStyles.mainContainer, { zIndex: isAlertOpen ? 1 : 0 }]}>
-        <Animated.View style={[deleteAlertStyles.alertContainer, alertContainerAnimationStyle]}>
-          <Text onPress={() => console.log('test')} style={{ color: 'white' }}>Teste</Text>
-        </Animated.View>
-      </View>
+      <TouchableWithoutFeedback onPress={() => console.log('pressed')}>
+        <Animated.View style={[deleteAlertStyles.backdropContainer, backdropAnimationStyle, { zIndex: isAlertOpen ? 1 : 0 }]} />
+      </TouchableWithoutFeedback>
+      <Animated.View style={[deleteAlertStyles.alertContainer, alertContainerAnimationStyle, { zIndex: isAlertOpen ? 1: 0 }]}>
+        <Text onPress={() => console.log('test')} style={{ color: 'white' }}>Teste</Text>
+      </Animated.View>
       {isAlertOpen ? openAlert() : closeAlert()}
     </>
   );
