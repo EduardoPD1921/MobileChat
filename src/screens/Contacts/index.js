@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, StatusBar } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import api from '../../api';
@@ -62,19 +62,34 @@ function Contacts({ navigation }) {
     )
   };
 
+  function renderStatusBar() {
+    if (isAlertOpen) {
+      return <StatusBar backgroundColor="#3a805f" />
+    }
+
+    return <StatusBar backgroundColor="#52B788" />
+  };
+
   return (
     <>
-      <DeleteAlert toggleAlertOpen={toggleAlertOpen} isAlertOpen={isAlertOpen} />
+      {renderStatusBar()}
+      <DeleteAlert 
+        toggleAlertOpen={toggleAlertOpen} 
+        isAlertOpen={isAlertOpen} 
+        selectedContact={selectedContact} 
+        clearSelectedContact={clearSelectedContact} 
+        updateUserContacts={updateUserContacts}
+      />
       <View style={containerStyle.mainScreenContainer}>
         <ContactsHeader 
           navigation={navigation} 
           selectedContact={selectedContact} 
           clearSelectedContact={clearSelectedContact} 
           updateUserContacts={updateUserContacts}
+          toggleAlertOpen={toggleAlertOpen}
         />
         {renderContacts()}
       </View>
-      <Text onPress={toggleAlertOpen}>Teste</Text>
     </>
   );
 };
