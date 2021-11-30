@@ -90,14 +90,6 @@ function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
       >
         <MaterialIcon name="group-add" color="white" size={20} />
       </AnimatedPressable>
-      {/* <AnimatedPressable 
-        onPress={toggleOptions} 
-        android_ripple={{ color: '#D4EDE1', radius: 30, borderless: true }} 
-        style={[containerStyle.mainIconContainer, { transform: [{ rotate: interpolateRotating }] }]}
-      > 
-        <AntDesignIcon name="plus" color="white" size={25} />
-        {isOpenOptions ? openOptions() : closeOptions()}
-      </AnimatedPressable> */}
       <Pressable
         onPress={toggleOptions}
         android_ripple={{ color: '#D4EDE1', radius: 30, borderless: true }}

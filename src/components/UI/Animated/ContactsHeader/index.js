@@ -10,7 +10,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { containerStyle, textStyle, iconStyle } from './styles';
 
-function ContactsHeader({ navigation, selectedContact, clearSelectedContact }) {
+function ContactsHeader({ navigation, selectedContact, clearSelectedContact, toggleAlertOpen }) {
   const menuOpacityAnimation = useSharedValue(1);
   const closeOpacityAnimation = useSharedValue(0);
   const closeZindexAnimation = useSharedValue(-10);
@@ -97,7 +97,8 @@ function ContactsHeader({ navigation, selectedContact, clearSelectedContact }) {
         </AnimatedPressable>
         <AnimatedPressable
           style={[iconStyle.search, closeStyle]}
-          onPress={() => console.log('test')}
+          // onPress={deleteContact}
+          onPress={toggleAlertOpen}
           android_ripple={{ color: '#D4EDE1', borderless: true }}
         >
           <IonIcon

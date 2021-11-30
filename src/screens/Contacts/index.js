@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { View, ScrollView, StatusBar, BackHandler } from 'react-native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 import api from '../../api';
 
 import ContactsHeader from '../../components/UI/Animated/ContactsHeader';
 import ContactCard from '../../components/UI/Animated/ContactCard';
+import DeleteAlert from '../../components/UI/Animated/DeleteAlert';
 
 import { containerStyle } from './styles';
 
 function Contacts({ navigation }) {
   const [userContacts, setUserContacts] = useState([]);
   const [selectedContact, setSelectedContact] = useState('');
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -23,8 +25,51 @@ function Contacts({ navigation }) {
     }
   }, [isFocused]);
 
+  // Alert back handler
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (isAlertOpen) {
+          toggleAlertOpen();
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [isAlertOpen, toggleAlertOpen])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (selectedContact) {
+          clearSelectedContact();
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [selectedContact, clearSelectedContact])
+  )
+
+  function toggleAlertOpen() {
+    setIsAlertOpen(prevState => !prevState);
+  };
+
   const handleLongPress = useCallback((data) => {
     setSelectedContact(data);
+  }, []);
+
+  const updateUserContacts = useCallback((data) => {
+    setUserContacts(data);
   }, []);
 
   const clearSelectedContact = useCallback(() => {
@@ -43,7 +88,8 @@ function Contacts({ navigation }) {
               contactPhone={contact.phone}
               contactEmail={contact.email}
               selectedContact={selectedContact}
-              setSelectedContact={handleLongPress} 
+              setSelectedContact={handleLongPress}
+              clearSelectedContact={clearSelectedContact} 
             />
           );
         })}
@@ -51,14 +97,35 @@ function Contacts({ navigation }) {
     )
   };
 
+  function renderStatusBar() {
+    if (isAlertOpen) {
+      return <StatusBar backgroundColor="#3a805f" />
+    }
+
+    return <StatusBar backgroundColor="#52B788" />
+  };
+
   return (
-    <View style={containerStyle.mainScreenContainer}>
-      <ContactsHeader navigation={navigation} selectedContact={selectedContact} clearSelectedContact={clearSelectedContact} />
-      {renderContacts()}
-      <Text onPress={() => console.log(!!selectedContact)}>
-        Teste
-      </Text>
-    </View>
+    <>
+      {renderStatusBar()}
+      <DeleteAlert 
+        toggleAlertOpen={toggleAlertOpen} 
+        isAlertOpen={isAlertOpen} 
+        selectedContact={selectedContact} 
+        clearSelectedContact={clearSelectedContact} 
+        updateUserContacts={updateUserContacts}
+      />
+      <View style={containerStyle.mainScreenContainer}>
+        <ContactsHeader 
+          navigation={navigation} 
+          selectedContact={selectedContact} 
+          clearSelectedContact={clearSelectedContact} 
+          updateUserContacts={updateUserContacts}
+          toggleAlertOpen={toggleAlertOpen}
+        />
+        {renderContacts()}
+      </View>
+    </>
   );
 };
 
