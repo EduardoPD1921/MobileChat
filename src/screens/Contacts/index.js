@@ -43,6 +43,7 @@ function Contacts({ navigation }) {
     }, [isAlertOpen, toggleAlertOpen])
   );
 
+  // Select back handler
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {

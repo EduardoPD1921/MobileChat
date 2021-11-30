@@ -12,7 +12,6 @@ function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
   const [groupIconXAnimation] = useState(new Animated.Value(0));
   const [groupIconYAnimation] = useState(new Animated.Value(0));
 
-  const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
   const AnimatedIcon = Animated.createAnimatedComponent(AntDesignIcon);
 
   function openOptions() {
@@ -72,24 +71,32 @@ function OptionsButton({ navigation, isOpenOptions, toggleOptions }) {
 
   return (
     <>
-      <AnimatedPressable
+      <Animated.View
         style={[containerStyle.contactIconContainer,
           { transform: [{ translateX: contactIconAnimation }, { translateY: contactIconAnimation }] }
         ]}
-        android_ripple={{ color: '#D4EDE1' }}
-        onPress={() => navigation.navigate('AddContact')}
       >
-        <FontAwesomeIcon name="user-plus" color="white" size={13} />
-      </AnimatedPressable>
-      <AnimatedPressable
+        <Pressable 
+          style={containerStyle.pressableContainer}
+          onPress={() => navigation.navigate('AddContact')}
+          android_ripple={{ color: '#D4EDE1', borderless: true }}
+        >
+          <FontAwesomeIcon name="user-plus" color="white" size={13} />
+        </Pressable>
+      </Animated.View>
+      <Animated.View
         style={[containerStyle.contactIconContainer,
           { backgroundColor: '#5F66CD' },
           { transform: [{ translateY: groupIconYAnimation }, { translateX: groupIconXAnimation }] }
         ]}
-        android_ripple={{ color: '#D4EDE1' }}
       >
-        <MaterialIcon name="group-add" color="white" size={20} />
-      </AnimatedPressable>
+        <Pressable 
+          style={containerStyle.pressableContainer}
+          android_ripple={{ color: '#D4EDE1', borderless: true }}
+        >
+          <MaterialIcon name="group-add" color="white" size={20} />
+        </Pressable>
+      </Animated.View>
       <Pressable
         onPress={toggleOptions}
         android_ripple={{ color: '#D4EDE1', radius: 30, borderless: true }}
