@@ -34,6 +34,7 @@ function DeleteAlert({ isAlertOpen, toggleAlertOpen, selectedContact, clearSelec
       .catch(error => console.log(error.response.data));
 
     clearSelectedContact();
+    toggleAlertOpen();
   };
 
   const alertContainerAnimationStyle = useAnimatedStyle(() => {

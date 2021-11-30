@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ScrollView, Text, StatusBar } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { View, ScrollView, StatusBar, BackHandler } from 'react-native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 import api from '../../api';
 
@@ -24,6 +24,41 @@ function Contacts({ navigation }) {
         .catch(error => console.log(error.response.data));
     }
   }, [isFocused]);
+
+  // Alert back handler
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (isAlertOpen) {
+          toggleAlertOpen();
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [isAlertOpen, toggleAlertOpen])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (selectedContact) {
+          clearSelectedContact();
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [selectedContact, clearSelectedContact])
+  )
 
   function toggleAlertOpen() {
     setIsAlertOpen(prevState => !prevState);
