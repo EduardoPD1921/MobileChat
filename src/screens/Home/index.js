@@ -31,7 +31,7 @@ function Home({ navigation }) {
       channelName: 'Invite channel'
     });
 
-    api.get('/chat/getUserChats')
+    api.get('chat/getUserChats')
       .then(resp => setUserChats(resp.data))
       .catch(error => console.log(error.response.data));
   }, []);
