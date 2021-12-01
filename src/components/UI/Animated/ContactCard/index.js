@@ -8,7 +8,8 @@ import Animated, {
   useAnimatedStyle
 } from 'react-native-reanimated';
 
-import api from '../../../../api';
+// import api from '../../../../api';
+import socket from '../../../../socket';
 
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
@@ -55,11 +56,7 @@ function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSe
       }
     ]
 
-    api.post('/chat/store', { chatUsers })
-      .then(resp => {
-        setUserChats(prevState => [...prevState, resp.data]);
-      })
-      .catch(error => console.log(error.response.data));
+    socket.emit('createChat', chatUsers);
   };
 
   function onPressHandler() {
