@@ -22,5 +22,14 @@ export const chatCardStyles = StyleSheet.create({
   },
   chatName: {
     fontFamily: 'Roboto-Medium',
+  },
+  chatNotification: {
+    position: 'absolute',
+    width: 6,
+    height: 6,
+    right: 30,
+    backgroundColor: 'blue',
+    alignSelf: 'center',
+    borderRadius: 12
   }
 });

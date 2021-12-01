@@ -16,7 +16,7 @@ function NotificationProvider({ children }) {
     function contactInviteReceived(userNotifications, sender) {
       setUserNotifications(userNotifications.notifications);
       PushNotification.localNotification({
-        channelId: 'invite-channel',
+        channelId: 'notification-channel',
         title: 'Pedido de amizade',
         message: `${sender.senderName} quer ser seu amigo`
       });

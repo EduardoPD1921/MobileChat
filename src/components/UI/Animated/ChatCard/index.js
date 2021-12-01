@@ -5,7 +5,13 @@ import userDefaultImage from '../../../../assets/images/userDefaultImage.png';
 
 import { chatCardStyles } from './styles';
 
-function ChatCard({ chatName }) {
+function ChatCard({ chatName, visualizationStatus }) {
+  function renderChatNotification() {
+    if (!visualizationStatus) {
+      return <View style={chatCardStyles.chatNotification} />
+    }
+  };
+
   return (
     <Pressable android_ripple={{ color: 'black' }}>
       <View style={chatCardStyles.cardContainer}>
@@ -15,6 +21,7 @@ function ChatCard({ chatName }) {
         <View style={chatCardStyles.chatInfoContainer}>
           <Text style={chatCardStyles.chatName}>{chatName}</Text>
         </View>
+        {renderChatNotification()}
       </View>
     </Pressable>
   );

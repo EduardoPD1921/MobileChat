@@ -27,8 +27,8 @@ function Home({ navigation }) {
     socket.emit('userConnected', authUserInfo);
 
     PushNotification.createChannel({
-      channelId: 'invite-channel',
-      channelName: 'Invite channel'
+      channelId: 'notification-channel',
+      channelName: 'Notification channel'
     });
 
     api.get('chat/getUserChats')
@@ -51,6 +51,7 @@ function Home({ navigation }) {
           <ChatCard
             key={chat.users[0]._id}
             chatName={chat.users[0].name} 
+            visualizationStatus={chat.visualizationStatus}
           />
         );
       }
@@ -59,6 +60,7 @@ function Home({ navigation }) {
         <ChatCard
           key={chat.users[1]._id}
           chatName={chat.users[1].name} 
+          visualizationStatus={chat.visualizationStatus}
         />
       );
     });

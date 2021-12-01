@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import PushNotification from 'react-native-push-notification';
 
 const ChatContext = createContext();
 
@@ -8,16 +9,34 @@ function ChatProvider({ children }) {
   const [userChats, setUserChats] = useState([]);
 
   useEffect(() => {
-    function updateUserChats(newChat) {
-      setUserChats(prevState => [...prevState, newChat]);
+    // Chat created by the auth user
+    function getCreatedChat(newChat) {
+      updateUserChats(newChat);
     };
 
-    socket.on('sendUserNewChat', updateUserChats);
+    // Chat created by another user
+    function getNewChat(newChat, contactName) {
+      updateUserChats(newChat);
+
+      PushNotification.localNotification({
+        channelId: 'notification-channel',
+        title: 'Novo chat criado',
+        message: `${contactName} iniciou um novo chat com você`
+      });
+    };
+
+    socket.on('getCreatedChat', getCreatedChat);
+    socket.on('getNewChat', getNewChat);
 
     return () => {
-      socket.off('sendUserNewChat', updateUserChats);
+      socket.off('getCreatedChat', getCreatedChat);
+      socket.off('getNewChat', getNewChat);
     };
   });
+
+  function updateUserChats(newChat) {
+    setUserChats(prevState => [...prevState, newChat]);
+  };
 
   return (
     <ChatContext.Provider value={{ userChats, setUserChats }}>

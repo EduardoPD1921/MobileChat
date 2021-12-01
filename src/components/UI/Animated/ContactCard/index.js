@@ -56,7 +56,7 @@ function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSe
       }
     ]
 
-    socket.emit('createChat', chatUsers);
+    socket.emit('createChat', chatUsers, contactId, contactName);
   };
 
   function onPressHandler() {
