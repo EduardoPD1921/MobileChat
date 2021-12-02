@@ -41,17 +41,8 @@ function ContactCard({ navigation, contactId, contactName, contactPhone, contact
   });
 
   function createChat() {
-    const chatValidation = userChats.map(chat => {
-      if (chat.type === 'chat') {
-        if (chat.users[0]._id === authUserInfo.id || chat.users[1]._id === authUserInfo.id) {
-          if (chat.users[0]._id === contactId || chat.users[1]._id === contactId) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    });
+    const chatValidation = userChats.filter(chat => (chat.type === 'chat') && 
+      (chat.users[0]._id === contactId || chat.users[1]._id === contactId));
 
     if (!!chatValidation[0]) {
       navigation.navigate('Home');
@@ -71,7 +62,7 @@ function ContactCard({ navigation, contactId, contactName, contactPhone, contact
         }
       ]
   
-      socket.emit('createChat', chatUsers, contactId, contactName);
+      socket.emit('createChat', chatUsers, contactId, authUserInfo.name);
     }
   };
 
