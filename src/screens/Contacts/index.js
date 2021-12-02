@@ -84,6 +84,7 @@ function Contacts({ navigation }) {
           return (
             <ContactCard
               key={contact._id}
+              navigation={navigation}
               contactId={contact._id}
               contactName={contact.name}
               contactPhone={contact.phone}

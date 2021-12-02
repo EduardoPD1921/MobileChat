@@ -18,9 +18,9 @@ import { componentStyles } from './styles';
 import userDefaultImage from '../../../../assets/images/userDefaultImage.png';
 import { iconStyle } from '../../HomeHeader/styles';
 
-function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSelectedContact, selectedContact, clearSelectedContact }) {
+function ContactCard({ navigation, contactId, contactName, contactPhone, contactEmail, setSelectedContact, selectedContact, clearSelectedContact }) {
   const { authUserInfo } = useContext(AuthContext);
-  const { userChats, setUserChats } = useContext(ChatContext);
+  const { userChats } = useContext(ChatContext);
 
   const iconScaleAnimation = useSharedValue(0);
 
@@ -41,22 +41,38 @@ function ContactCard({ contactId, contactName, contactPhone, contactEmail, setSe
   });
 
   function createChat() {
-    const chatUsers = [
-      {
-        _id: authUserInfo.id,
-        name: authUserInfo.name,
-        email: authUserInfo.email,
-        phone: authUserInfo.phone
-      },
-      {
-        _id: contactId,
-        name: contactName,
-        email: contactEmail,
-        phone: contactPhone
+    const chatValidation = userChats.map(chat => {
+      if (chat.type === 'chat') {
+        if (chat.users[0]._id === authUserInfo.id || chat.users[1]._id === authUserInfo.id) {
+          if (chat.users[0]._id === contactId || chat.users[1]._id === contactId) {
+            return true;
+          }
+        }
       }
-    ]
 
-    socket.emit('createChat', chatUsers, contactId, contactName);
+      return false;
+    });
+
+    if (!!chatValidation[0]) {
+      navigation.navigate('Home');
+    } else {
+      const chatUsers = [
+        {
+          _id: authUserInfo.id,
+          name: authUserInfo.name,
+          email: authUserInfo.email,
+          phone: authUserInfo.phone
+        },
+        {
+          _id: contactId,
+          name: contactName,
+          email: contactEmail,
+          phone: contactPhone
+        }
+      ]
+  
+      socket.emit('createChat', chatUsers, contactId, contactName);
+    }
   };
 
   function onPressHandler() {
